@@ -40,7 +40,7 @@ const PurchaseCard = () => {
 
   if (account.purchased) {
     return (
-      <Card>
+      <Card size="lg">
         <CardHeader>
           <CircleCheckIcon aria-hidden className="text-primary mb-2 size-6" />
           <CardTitle>You own {SITE.NAME}</CardTitle>
@@ -60,7 +60,7 @@ const PurchaseCard = () => {
   }
 
   return (
-    <Card>
+    <Card size="lg">
       <CardHeader>
         <CardTitle>Get {SITE.NAME}</CardTitle>
         <CardDescription>
@@ -69,7 +69,7 @@ const PurchaseCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           <PppNotice pricing={account.pricing} />
           <BuyButton pricing={account.pricing} />
         </div>

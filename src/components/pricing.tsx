@@ -15,7 +15,7 @@ import { formatUsd } from "@/lib/ppp";
 import type { Pricing } from "@/server/polar";
 
 export const BuyButton = ({ pricing }: { pricing: Pricing }) => (
-  <div className="flex flex-wrap items-center gap-3">
+  <div className="flex flex-wrap items-center gap-4">
     <a href="/checkout" className={buttonVariants({ size: "lg" })}>
       Get {SITE.NAME} for {formatUsd(pricing.priceCents)}
     </a>
@@ -31,7 +31,7 @@ export const PppNotice = ({ pricing }: { pricing: Pricing }) => {
     new Intl.DisplayNames(["en"], { type: "region" }).of(pricing.country) ??
     pricing.country;
   return (
-    <p className="border-primary/40 bg-primary/10 flex items-start gap-2 rounded-lg border px-3 py-2 text-sm">
+    <p className="border-primary/40 bg-primary/10 flex items-start gap-2.5 rounded-lg border px-4 py-3 text-sm leading-relaxed">
       <GlobeIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
       <span>
         Looks like you’re in {country}. We’ve applied a{" "}
@@ -46,9 +46,9 @@ export const PppNotice = ({ pricing }: { pricing: Pricing }) => {
 export const PriceCard = ({ pricing }: { pricing: Pricing }) => {
   const discounted = pricing.priceCents !== pricing.basePriceCents;
   return (
-    <Card className="mx-auto w-full max-w-sm">
+    <Card size="lg" className="mx-auto w-full max-w-sm">
       <CardHeader>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           <CardTitle>{SITE.NAME}</CardTitle>
           <p className="flex items-baseline gap-2">
             <span className="text-4xl font-semibold tracking-tight">
@@ -65,7 +65,7 @@ export const PriceCard = ({ pricing }: { pricing: Pricing }) => {
         </div>
       </CardHeader>
       <CardContent>
-        <ul className="flex flex-col gap-2 text-sm">
+        <ul className="flex flex-col gap-3 text-sm">
           {PERKS.map((perk) => (
             <li key={perk} className="flex gap-2">
               <CheckIcon
@@ -77,7 +77,7 @@ export const PriceCard = ({ pricing }: { pricing: Pricing }) => {
           ))}
         </ul>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="border-t-0 bg-transparent pt-0">
         <a
           href="/checkout"
           className={cn(

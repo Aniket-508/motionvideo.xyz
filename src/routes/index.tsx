@@ -98,8 +98,7 @@ const Landing = () => {
               variant="dashboard"
               caption={{
                 label: "Portfolio showreel",
-                prompt:
-                  "A 15s intro reel for my portfolio: name, role, confident exit.",
+                prompt: "A 15s intro reel for my portfolio",
               }}
             />
           </section>
@@ -122,8 +121,7 @@ const Landing = () => {
               variant="palette"
               caption={{
                 label: "shadercn launch film",
-                prompt:
-                  "A 15s launch film for shadercn that opens on a single glow.",
+                prompt: "A 15s launch film for shadercn",
               }}
             />
           </section>
