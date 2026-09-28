@@ -6,8 +6,8 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 import { Polar } from "@polar-sh/sdk";
 
+import { SITE } from "../src/constants/site.ts";
 import { BASE_PRICE_CENTS, PPP_TIERS } from "../src/lib/ppp.ts";
-import { site } from "../src/lib/site.ts";
 
 const ENV_FILE = ".env";
 if (existsSync(ENV_FILE)) {
@@ -30,17 +30,17 @@ if (productId) {
 } else {
   const { result } = await polar.products.list({
     isArchived: false,
-    query: site.name,
+    query: SITE.NAME,
     limit: 100,
   });
-  const match = result.items.find((product) => product.name === site.name);
+  const match = result.items.find((product) => product.name === SITE.NAME);
   if (match) {
     productId = match.id;
-    console.log(`Reusing product "${site.name}" ${productId}`);
+    console.log(`Reusing product "${SITE.NAME}" ${productId}`);
   } else {
     const product = await polar.products.create({
-      name: site.name,
-      description: site.description,
+      name: SITE.NAME,
+      description: SITE.DESCRIPTION.LONG,
       recurringInterval: null,
       prices: [
         {

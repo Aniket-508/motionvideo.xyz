@@ -12,7 +12,8 @@ Marketing and checkout site for the motionvideo agent skill pack. The site is op
 - **Webhooks**: `POST /api/webhook/polar` verifies Polar's signature with `POLAR_WEBHOOK_SECRET`; `order.paid` and `customer.state_changed` handlers are stubs.
 - **Delivery**: a Polar _GitHub Repository Access_ benefit on the product invites the buyer to the private repo. The dashboard links to the Polar customer portal, where buyers claim access and download receipts.
 - **Purchase status**: read from Polar by the buyer's email (customers → orders). The app stores no order data.
-- **Legal**: `/terms`, `/privacy`, `/refunds`. The seller name, jurisdiction, support email, and "last updated" date live in `src/lib/site.ts`.
+- **Legal**: `/terms`, `/privacy`, `/refunds`, `/dpa`. The seller name, jurisdiction, and "last updated" date live in `SITE.LEGAL` (`src/constants/site.ts`); the support email is `LINK.EMAIL` (`src/constants/links.ts`).
+- **Pages**: `/about`, `/brand` (downloads in `public/brand`), `/contact`. These and the legal pages live in `src/routes/_pages/` and share one pathless layout route (`src/routes/_pages.tsx`) for the header, footer, and page width. The contact form emails `LINK.EMAIL` via Resend with Reply-To set to the sender; a Workers rate limit (`CONTACT_LIMITER`, 3/min per IP) and a honeypot field keep spam down.
 
 ## Local development
 
@@ -59,4 +60,4 @@ pnpm dev                         # http://localhost:3000
 
 ## Editing content
 
-Copy, FAQ, and links live in `src/lib/site.ts`. PPP tiers live in `src/lib/ppp.ts`. Video URLs live in `videos` in `src/lib/site.ts`; an empty entry shows the CSS placeholder from `src/components/demo-frame.tsx`. Agent and renderer logos live in `public/logos` (agent icons from LobeHub Icons, MIT).
+Site copy and links live in `src/constants/` (`site`, `links`, `routes`, `faqs`, `features`, `steps`, `pricing`, `stack`, `products`, `videos`). SEO lives in `src/seo/`: `createMetadata()` for per-route head tags and `baseMetadata` on the root route, plus JSON-LD (WebSite, Organization, Product, FAQPage, BreadcrumbList) emitted through `head().scripts`. PPP tiers live in `src/lib/ppp.ts`. Video URLs live in `VIDEOS` in `src/constants/videos.ts` (files in `public/videos`, max 25 MiB each on Workers) and play in the Sutro theme from [player.style](https://player.style); an empty entry shows the CSS placeholder from `src/components/demo-frame.tsx`. Agent and renderer logos live in `public/logos` (agent icons from LobeHub Icons, MIT).

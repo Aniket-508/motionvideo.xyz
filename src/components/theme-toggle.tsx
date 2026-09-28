@@ -38,7 +38,7 @@ export const ThemeToggle = () => {
   );
 
   return (
-    <fieldset className="bg-muted inline-flex gap-0.5 rounded-full border-0 p-0.5">
+    <fieldset className="bg-muted inline-flex w-fit gap-0.5 rounded-full border-0 p-0.5">
       <legend className="sr-only">Theme</legend>
       {options.map(({ icon: Icon, label, value }) => (
         <button

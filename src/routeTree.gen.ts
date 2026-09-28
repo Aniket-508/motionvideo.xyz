@@ -10,19 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PagesRouteImport } from './routes/_pages'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as RefundsRouteImport } from './routes/refunds'
 import { Route as SignInRouteImport } from './routes/sign-in'
-import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as PagesAboutRouteImport } from './routes/_pages/about'
+import { Route as PagesBrandRouteImport } from './routes/_pages/brand'
+import { Route as PagesContactRouteImport } from './routes/_pages/contact'
+import { Route as PagesDpaRouteImport } from './routes/_pages/dpa'
+import { Route as PagesPrivacyRouteImport } from './routes/_pages/privacy'
+import { Route as PagesRefundsRouteImport } from './routes/_pages/refunds'
+import { Route as PagesTermsRouteImport } from './routes/_pages/terms'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiWebhookPolarRouteImport } from './routes/api/webhook/polar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagesRoute = PagesRouteImport.update({
+  id: '/_pages',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -35,30 +44,50 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RefundsRoute = RefundsRouteImport.update({
-  id: '/refunds',
-  path: '/refunds',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PagesAboutRoute = PagesAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => PagesRoute,
+} as any)
+const PagesBrandRoute = PagesBrandRouteImport.update({
+  id: '/brand',
+  path: '/brand',
+  getParentRoute: () => PagesRoute,
+} as any)
+const PagesContactRoute = PagesContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => PagesRoute,
+} as any)
+const PagesDpaRoute = PagesDpaRouteImport.update({
+  id: '/dpa',
+  path: '/dpa',
+  getParentRoute: () => PagesRoute,
+} as any)
+const PagesPrivacyRoute = PagesPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => PagesRoute,
+} as any)
+const PagesRefundsRoute = PagesRefundsRouteImport.update({
+  id: '/refunds',
+  path: '/refunds',
+  getParentRoute: () => PagesRoute,
+} as any)
+const PagesTermsRoute = PagesTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => PagesRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -75,11 +104,15 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
-  '/privacy': typeof PrivacyRoute
-  '/refunds': typeof RefundsRoute
   '/sign-in': typeof SignInRoute
-  '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/about': typeof PagesAboutRoute
+  '/brand': typeof PagesBrandRoute
+  '/contact': typeof PagesContactRoute
+  '/dpa': typeof PagesDpaRoute
+  '/privacy': typeof PagesPrivacyRoute
+  '/refunds': typeof PagesRefundsRoute
+  '/terms': typeof PagesTermsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhook/polar': typeof ApiWebhookPolarRoute
 }
@@ -87,24 +120,33 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
-  '/privacy': typeof PrivacyRoute
-  '/refunds': typeof RefundsRoute
   '/sign-in': typeof SignInRoute
-  '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/about': typeof PagesAboutRoute
+  '/brand': typeof PagesBrandRoute
+  '/contact': typeof PagesContactRoute
+  '/dpa': typeof PagesDpaRoute
+  '/privacy': typeof PagesPrivacyRoute
+  '/refunds': typeof PagesRefundsRoute
+  '/terms': typeof PagesTermsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhook/polar': typeof ApiWebhookPolarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_pages': typeof PagesRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
-  '/privacy': typeof PrivacyRoute
-  '/refunds': typeof RefundsRoute
   '/sign-in': typeof SignInRoute
-  '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/_pages/about': typeof PagesAboutRoute
+  '/_pages/brand': typeof PagesBrandRoute
+  '/_pages/contact': typeof PagesContactRoute
+  '/_pages/dpa': typeof PagesDpaRoute
+  '/_pages/privacy': typeof PagesPrivacyRoute
+  '/_pages/refunds': typeof PagesRefundsRoute
+  '/_pages/terms': typeof PagesTermsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhook/polar': typeof ApiWebhookPolarRoute
 }
@@ -114,11 +156,15 @@ export interface FileRouteTypes {
     | '/'
     | '/checkout'
     | '/dashboard'
+    | '/sign-in'
+    | '/welcome'
+    | '/about'
+    | '/brand'
+    | '/contact'
+    | '/dpa'
     | '/privacy'
     | '/refunds'
-    | '/sign-in'
     | '/terms'
-    | '/welcome'
     | '/api/auth/$'
     | '/api/webhook/polar'
   fileRoutesByTo: FileRoutesByTo
@@ -126,35 +172,42 @@ export interface FileRouteTypes {
     | '/'
     | '/checkout'
     | '/dashboard'
+    | '/sign-in'
+    | '/welcome'
+    | '/about'
+    | '/brand'
+    | '/contact'
+    | '/dpa'
     | '/privacy'
     | '/refunds'
-    | '/sign-in'
     | '/terms'
-    | '/welcome'
     | '/api/auth/$'
     | '/api/webhook/polar'
   id:
     | '__root__'
     | '/'
+    | '/_pages'
     | '/checkout'
     | '/dashboard'
-    | '/privacy'
-    | '/refunds'
     | '/sign-in'
-    | '/terms'
     | '/welcome'
+    | '/_pages/about'
+    | '/_pages/brand'
+    | '/_pages/contact'
+    | '/_pages/dpa'
+    | '/_pages/privacy'
+    | '/_pages/refunds'
+    | '/_pages/terms'
     | '/api/auth/$'
     | '/api/webhook/polar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PagesRoute: typeof PagesRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
   DashboardRoute: typeof DashboardRoute
-  PrivacyRoute: typeof PrivacyRoute
-  RefundsRoute: typeof RefundsRoute
   SignInRoute: typeof SignInRoute
-  TermsRoute: typeof TermsRoute
   WelcomeRoute: typeof WelcomeRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiWebhookPolarRoute: typeof ApiWebhookPolarRoute
@@ -167,6 +220,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_pages': {
+      id: '/_pages'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PagesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -183,32 +243,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/refunds': {
-      id: '/refunds'
-      path: '/refunds'
-      fullPath: '/refunds'
-      preLoaderRoute: typeof RefundsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sign-in': {
       id: '/sign-in'
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof SignInRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/welcome': {
@@ -217,6 +256,55 @@ declare module '@tanstack/react-router' {
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_pages/about': {
+      id: '/_pages/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof PagesAboutRouteImport
+      parentRoute: typeof PagesRoute
+    }
+    '/_pages/brand': {
+      id: '/_pages/brand'
+      path: '/brand'
+      fullPath: '/brand'
+      preLoaderRoute: typeof PagesBrandRouteImport
+      parentRoute: typeof PagesRoute
+    }
+    '/_pages/contact': {
+      id: '/_pages/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof PagesContactRouteImport
+      parentRoute: typeof PagesRoute
+    }
+    '/_pages/dpa': {
+      id: '/_pages/dpa'
+      path: '/dpa'
+      fullPath: '/dpa'
+      preLoaderRoute: typeof PagesDpaRouteImport
+      parentRoute: typeof PagesRoute
+    }
+    '/_pages/privacy': {
+      id: '/_pages/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PagesPrivacyRouteImport
+      parentRoute: typeof PagesRoute
+    }
+    '/_pages/refunds': {
+      id: '/_pages/refunds'
+      path: '/refunds'
+      fullPath: '/refunds'
+      preLoaderRoute: typeof PagesRefundsRouteImport
+      parentRoute: typeof PagesRoute
+    }
+    '/_pages/terms': {
+      id: '/_pages/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof PagesTermsRouteImport
+      parentRoute: typeof PagesRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -235,14 +323,34 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface PagesRouteChildren {
+  PagesAboutRoute: typeof PagesAboutRoute
+  PagesBrandRoute: typeof PagesBrandRoute
+  PagesContactRoute: typeof PagesContactRoute
+  PagesDpaRoute: typeof PagesDpaRoute
+  PagesPrivacyRoute: typeof PagesPrivacyRoute
+  PagesRefundsRoute: typeof PagesRefundsRoute
+  PagesTermsRoute: typeof PagesTermsRoute
+}
+
+const PagesRouteChildren: PagesRouteChildren = {
+  PagesAboutRoute: PagesAboutRoute,
+  PagesBrandRoute: PagesBrandRoute,
+  PagesContactRoute: PagesContactRoute,
+  PagesDpaRoute: PagesDpaRoute,
+  PagesPrivacyRoute: PagesPrivacyRoute,
+  PagesRefundsRoute: PagesRefundsRoute,
+  PagesTermsRoute: PagesTermsRoute,
+}
+
+const PagesRouteWithChildren = PagesRoute._addFileChildren(PagesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PagesRoute: PagesRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
   DashboardRoute: DashboardRoute,
-  PrivacyRoute: PrivacyRoute,
-  RefundsRoute: RefundsRoute,
   SignInRoute: SignInRoute,
-  TermsRoute: TermsRoute,
   WelcomeRoute: WelcomeRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiWebhookPolarRoute: ApiWebhookPolarRoute,

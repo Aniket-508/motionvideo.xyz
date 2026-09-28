@@ -2,8 +2,9 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-import { site } from "@/lib/site";
 import { themeScript } from "@/lib/theme";
+import { organizationJsonLd, websiteJsonLd } from "@/seo/json-ld";
+import { baseMetadata } from "@/seo/metadata";
 
 import appCss from "../styles.css?url";
 
@@ -32,27 +33,9 @@ const RootDocument = ({ children }: { children: React.ReactNode }) => (
 
 export const Route = createRootRoute({
   head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: `${site.tagline} | ${site.name}` },
-      { name: "description", content: site.description },
-      { name: "color-scheme", content: "light dark" },
-      { property: "og:title", content: `${site.tagline} | ${site.name}` },
-      { property: "og:description", content: site.description },
-      { property: "og:url", content: site.url },
-      { property: "og:site_name", content: site.name },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-      { rel: "manifest", href: "/manifest.json" },
-    ],
-    scripts: [{ children: themeScript }],
+    links: [{ href: appCss, rel: "stylesheet" }, ...baseMetadata.links],
+    meta: baseMetadata.meta,
+    scripts: [{ children: themeScript }, websiteJsonLd(), organizationJsonLd()],
   }),
   notFoundComponent: () => (
     <main className="container mx-auto p-4 pt-16">

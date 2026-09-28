@@ -56,7 +56,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.852 0.199 91.936);
-  --primary-foreground: oklch(0.421 0.095 57.708);
+  --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.97 0 0);
@@ -91,7 +91,7 @@
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.795 0.184 86.047);
-  --primary-foreground: oklch(0.421 0.095 57.708);
+  --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -132,12 +132,12 @@
     @apply font-sans;
   }
 }
-/* Demo frame animations */
+/* Demo frame and feature art animations */
 @theme {
   /* Main call-to-action button (`<Button variant="cta" size="cta">`). */
   --color-cta-from: #ffdd73;
   --color-cta-to: #ffbe25;
-  --color-cta-foreground: oklch(0.2 0 0);
+  --color-cta-foreground: oklch(0.145 0 0);
   --shadow-cta:
     inset 0 0 1px 1px #ffffff24, 0 0 0 1px #00000014, 0 2px 2px #0000000a,
     0 0 0 1px #fac83e;
@@ -146,11 +146,67 @@
   --animate-mv-rise: mv-rise 8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
   --animate-mv-cursor: mv-cursor 8s ease-in-out infinite;
   --animate-mv-zoom: mv-zoom 8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  --animate-mv-type: mv-type 4s ease-out infinite both;
+  --animate-mv-strip: mv-strip 4s linear infinite;
+  --animate-mv-spring: mv-spring 2.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite
+    alternate;
+  --animate-mv-cycle: mv-cycle 6s ease-in-out infinite both;
 }
 
 /* `mv-delay-<ms>`: staggers the looping demo animations. */
 @utility mv-delay-* {
   animation-delay: calc(--value(integer) * 1ms);
+}
+
+@keyframes mv-type {
+  0%,
+  5% {
+    transform: scaleX(0);
+  }
+  30%,
+  85% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+@keyframes mv-strip {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-112px);
+  }
+}
+
+@keyframes mv-spring {
+  from {
+    transform: translate(0, 28px);
+  }
+  to {
+    transform: translate(128px, -14px);
+  }
+}
+
+@keyframes mv-cycle {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  5%,
+  22% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  27%,
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
 }
 
 @keyframes mv-progress {
@@ -214,4 +270,16 @@
   100% {
     transform: scale(1);
   }
+}
+
+/* SVG shapes transform around their own box, not the whole viewBox. */
+@utility transform-box-fill {
+  transform-box: fill-box;
+}
+
+/* Sutro video player (player.style) in the site's colors. */
+media-theme-sutro {
+  --media-primary-color: #ffffff;
+  --media-secondary-color: rgb(0 0 0 / 0.55);
+  --media-accent-color: #ffbe25;
 }

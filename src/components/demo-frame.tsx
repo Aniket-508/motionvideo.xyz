@@ -1,5 +1,6 @@
 import { cn } from "cn";
 import { MousePointer2Icon, PlayIcon } from "lucide-react";
+import MediaThemeSutro from "player.style/sutro/react";
 
 interface DemoFrameProps {
   /** Rendered video URL. Empty shows the animated placeholder. */
@@ -85,20 +86,25 @@ const PaletteScene = () => (
   </div>
 );
 
-// A product video, or a looping CSS-only stand-in until `src` is set.
+// A video in the Sutro player (player.style), or a looping CSS-only stand-in
+// until `src` is set.
 export const DemoFrame = ({ src, variant, caption }: DemoFrameProps) => (
   <figure className="flex flex-col gap-3">
     <div className="bg-muted/40 relative aspect-video overflow-hidden rounded-xl border shadow-sm">
       {src ? (
-        <video
-          src={src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="size-full object-cover"
-        />
+        <MediaThemeSutro className="block size-full">
+          {/* Motion pieces with music only, no spoken words to caption. */}
+          {/* oxlint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            slot="media"
+            // `#t=0.1` makes browsers paint the first frame as the poster.
+            src={`${src}#t=0.1`}
+            playsInline
+            preload="metadata"
+            crossOrigin="anonymous"
+            className="size-full object-cover"
+          />
+        </MediaThemeSutro>
       ) : (
         <>
           <div className="animate-mv-zoom absolute inset-0 p-4 motion-reduce:animate-none sm:p-8">
@@ -121,9 +127,11 @@ export const DemoFrame = ({ src, variant, caption }: DemoFrameProps) => (
       )}
     </div>
     {caption && (
-      <figcaption className="text-muted-foreground text-sm">
-        <span className="text-foreground font-medium">{caption.label}</span> ·
-        One prompt: “{caption.prompt}”
+      <figcaption className="text-muted-foreground flex flex-col gap-1 text-sm sm:flex-row sm:justify-between sm:gap-6">
+        <span className="text-foreground shrink-0 font-medium">
+          {caption.label}
+        </span>
+        <span className="sm:text-right">Prompt: “{caption.prompt}”</span>
       </figcaption>
     )}
   </figure>

@@ -18,8 +18,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SITE } from "@/constants/site";
 import { authClient } from "@/lib/auth-client";
-import { site } from "@/lib/site";
+import { createMetadata } from "@/seo/metadata";
 import { getAccount, getPortalUrl } from "@/server/functions";
 
 const routeApi = getRouteApi("/dashboard");
@@ -42,7 +43,7 @@ const PurchaseCard = () => {
       <Card>
         <CardHeader>
           <CircleCheckIcon aria-hidden className="text-primary mb-2 size-6" />
-          <CardTitle>You own {site.name}</CardTitle>
+          <CardTitle>You own {SITE.NAME}</CardTitle>
           <CardDescription>
             Open the customer portal to connect your GitHub account and get
             access to the private skill pack repository. Receipts and invoices
@@ -50,7 +51,7 @@ const PurchaseCard = () => {
           </CardDescription>
         </CardHeader>
         <CardFooter>
-          <Button variant="cta" size="cta" onClick={openPortal} disabled={busy}>
+          <Button size="lg" onClick={openPortal} disabled={busy}>
             {busy ? "Opening…" : "Open customer portal"}
           </Button>
         </CardFooter>
@@ -61,7 +62,7 @@ const PurchaseCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Get {site.name}</CardTitle>
+        <CardTitle>Get {SITE.NAME}</CardTitle>
         <CardDescription>
           One-time purchase. You’ll get access to the private skill pack
           repository and every future update.
@@ -108,7 +109,7 @@ const Dashboard = () => {
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
-  head: () => ({ meta: [{ title: `Dashboard | ${site.name}` }] }),
+  head: () => createMetadata({ noIndex: true, title: "Dashboard" }),
   loader: async () => {
     const account = await getAccount();
     if (!account) {

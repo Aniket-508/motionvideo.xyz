@@ -17,8 +17,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SITE } from "@/constants/site";
 import { authClient } from "@/lib/auth-client";
-import { site } from "@/lib/site";
+import { createMetadata } from "@/seo/metadata";
 import { getCheckoutResult } from "@/server/functions";
 
 interface WelcomeSearch {
@@ -92,7 +93,7 @@ const SignInLink = ({ email }: { email: string }) => {
           </CardDescription>
         </CardHeader>
         <CardFooter>
-          <Button variant="cta" size="cta" onClick={send}>
+          <Button size="lg" onClick={send}>
             Send the link again
           </Button>
         </CardFooter>
@@ -125,7 +126,7 @@ const Welcome = () => {
           <>
             <CardHeader>
               <PartyPopperIcon aria-hidden className="mb-2 size-6" />
-              <CardTitle>Thanks for buying {site.name}!</CardTitle>
+              <CardTitle>Thanks for buying {SITE.NAME}!</CardTitle>
             </CardHeader>
             <SignInLink email={checkout.email} />
           </>
@@ -168,10 +169,5 @@ export const Route = createFileRoute("/welcome")({
     return checkout;
   },
   component: Welcome,
-  head: () => ({
-    meta: [
-      { title: `Welcome | ${site.name}` },
-      { content: "noindex", name: "robots" },
-    ],
-  }),
+  head: () => createMetadata({ noIndex: true, title: "Welcome" }),
 });

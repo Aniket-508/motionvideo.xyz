@@ -1,8 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
+import { env } from "cloudflare:workers";
 import { z } from "zod";
 
+import { LINK } from "@/constants/links";
+import { SITE } from "@/constants/site";
+import { contactSchema } from "@/lib/contact";
+
 import { auth } from "./auth";
+import { sendEmail } from "./email";
 import {
   completedCheckout,
   customerPortalUrl,
@@ -49,5 +55,26 @@ export const getPortalUrl = createServerFn({ method: "POST" }).handler(
 // Polar's success redirect lands on /welcome with the checkout id; the email
 // on that checkout is where the buyer's sign-in link goes.
 export const getCheckoutResult = createServerFn({ method: "GET" })
-  .inputValidator(z.object({ checkoutId: z.string().min(1) }))
+  .validator(z.object({ checkoutId: z.string().min(1) }))
   .handler(({ data }) => completedCheckout(data.checkoutId));
+
+export type ContactResult = { ok: true } | { ok: false; error: string };
+
+// Sends a contact-form message to the support inbox, with Reply-To set to
+// the sender so answering from the inbox reaches them directly.
+export const sendContactMessage = createServerFn({ method: "POST" })
+  .validator(contactSchema)
+  .handler(async ({ data }): Promise<ContactResult> => {
+    const ip = getRequest().headers.get("cf-connecting-ip") ?? "unknown";
+    const { success } = await env.CONTACT_LIMITER.limit({ key: ip });
+    if (!success) {
+      return { error: "Too many messages. Try again in a minute.", ok: false };
+    }
+    await sendEmail({
+      replyTo: data.email,
+      subject: `${SITE.NAME} contact: ${data.name}`,
+      text: `From: ${data.name} <${data.email}>\n\n${data.message}`,
+      to: LINK.EMAIL,
+    });
+    return { ok: true };
+  });

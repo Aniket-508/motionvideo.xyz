@@ -1,4 +1,4 @@
-import type { Logo } from "@/lib/site";
+import type { Logo } from "@/constants/stack";
 
 // Overlapping round logos followed by a short label, e.g. "Works with any agent".
 export const LogoGroup = ({

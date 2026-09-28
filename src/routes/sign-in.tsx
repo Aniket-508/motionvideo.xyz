@@ -15,8 +15,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ROUTES } from "@/constants/routes";
+import { SITE } from "@/constants/site";
 import { authClient } from "@/lib/auth-client";
-import { site } from "@/lib/site";
+import { createMetadata } from "@/seo/metadata";
 
 interface SignInSearch {
   error?: string;
@@ -102,26 +104,18 @@ const SignIn = () => {
                     {error}
                   </p>
                 )}
-                <Button
-                  type="submit"
-                  variant="cta"
-                  size="cta"
-                  disabled={status === "sending"}
-                >
-                  {status === "sending"
-                    ? "Sending…"
-                    : "Email me a sign-in link"}
+                <Button type="submit" size="lg" disabled={status === "sending"}>
+                  {status === "sending" ? "Sending…" : "Send link"}
                 </Button>
               </form>
               <p className="text-muted-foreground mt-4 text-sm">
-                Don’t own {site.name} yet?{" "}
+                Don’t own {SITE.NAME} yet?{" "}
                 <a
                   href="/checkout"
                   className="text-foreground underline underline-offset-4"
                 >
                   Buy it here
                 </a>
-                .
               </p>
             </CardContent>
           </>
@@ -133,12 +127,12 @@ const SignIn = () => {
 
 export const Route = createFileRoute("/sign-in")({
   component: SignIn,
-  head: () => ({
-    meta: [
-      { title: `Sign in | ${site.name}` },
-      { content: "noindex", name: "robots" },
-    ],
-  }),
+  head: () =>
+    createMetadata({
+      canonical: ROUTES.SIGN_IN,
+      noIndex: true,
+      title: "Sign in",
+    }),
   validateSearch: (search): SignInSearch => ({
     error: z.string().safeParse(search.error).data,
     redirect: safeRedirect.safeParse(search.redirect).data,
