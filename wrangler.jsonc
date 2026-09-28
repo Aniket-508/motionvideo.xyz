@@ -3,10 +3,17 @@
   "name": "motionvideo",
   "compatibility_date": "2026-09-27",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry",
+  "main": "src/server.ts",
   "observability": {
     "enabled": true,
   },
+  // Served only on the custom domains; auth is bound to BETTER_AUTH_URL.
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "motionvideo.xyz", "custom_domain": true },
+    { "pattern": "www.motionvideo.xyz", "custom_domain": true },
+  ],
   // Non-secret production config. `.env` overrides these locally.
   // Secrets (BETTER_AUTH_SECRET, RESEND_API_KEY, POLAR_*) are set with `wrangler secret put`.
   "vars": {
@@ -18,8 +25,7 @@
     {
       "binding": "DB",
       "database_name": "motionvideo",
-      // Replace with the id printed by `pnpm wrangler d1 create motionvideo`.
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "c44471e8-d7d2-4005-8f95-1e12f0ee0ae8",
       "migrations_dir": "drizzle",
     },
   ],

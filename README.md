@@ -29,7 +29,7 @@ pnpm dev                         # http://localhost:3000
 ## Deploy (Cloudflare Workers)
 
 1. `pnpm wrangler login`
-2. `pnpm wrangler d1 create motionvideo`, then paste the `database_id` into `wrangler.jsonc`.
+2. The production D1 database (`motionvideo`) already exists and its id is in `wrangler.jsonc`. For a fresh account, run `pnpm wrangler d1 create motionvideo` and paste the new `database_id`.
 3. Check `vars` in `wrangler.jsonc` (`BETTER_AUTH_URL`, `EMAIL_FROM`).
 4. Polar (production): put an organization access token in `.env` and run `pnpm polar:setup`. In the Polar dashboard, add a GitHub Repository Access benefit for the private skill repo to the product, and create a webhook endpoint for `https://<domain>/api/webhook/polar` (format: raw, events `order.paid` and `customer.state_changed`). See `POLAR_SETUP.md`.
 5. Resend: verify the sending domain and create an API key.
@@ -42,8 +42,8 @@ pnpm dev                         # http://localhost:3000
    pnpm wrangler secret put POLAR_PRODUCT_ID
    pnpm wrangler secret put POLAR_PPP_DISCOUNTS
    ```
-7. `pnpm deploy`, which builds, applies D1 migrations remotely, and deploys.
-8. Attach the custom domain under Workers → Settings → Domains & Routes.
+7. `pnpm run deploy` builds, applies D1 migrations remotely, and deploys. (Plain `pnpm deploy` is a built-in pnpm command and does something else.)
+8. Custom domains (`motionvideo.xyz`, `www.motionvideo.xyz`) are declared in `wrangler.jsonc` `routes` and attached on deploy; the zone must be active on the same Cloudflare account. `src/server.ts` 301-redirects `www` to the apex, and `workers.dev` is disabled.
 
 ## Scripts
 
