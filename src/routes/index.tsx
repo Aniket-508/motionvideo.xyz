@@ -131,14 +131,13 @@ const Landing = () => {
             className="flex scroll-mt-8 flex-col gap-6"
           >
             <h2 className={sectionTitle}>How it works</h2>
-            <ol className="grid gap-6 sm:grid-cols-2">
+            <ol className="flex flex-col gap-3.5">
               {STEPS.map((step, i) => (
-                <li key={step.title} className="flex flex-col gap-2">
-                  <span className="text-muted-foreground font-mono text-xs">
-                    0{i + 1}
+                <li key={step} className="flex items-baseline gap-3.5">
+                  <span className="text-muted-foreground w-6 shrink-0 font-mono text-sm tabular-nums">
+                    0{i + 1}.
                   </span>
-                  <h3 className="font-medium">{step.title}</h3>
-                  <p className="text-muted-foreground text-sm">{step.body}</p>
+                  <span>{step}</span>
                 </li>
               ))}
             </ol>

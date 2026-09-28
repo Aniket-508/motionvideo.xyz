@@ -1,3 +1,5 @@
+import { cn } from "cn";
+
 import type { Logo } from "@/constants/stack";
 
 // Overlapping round logos followed by a short label, e.g. "Works with any agent".
@@ -14,14 +16,14 @@ export const LogoGroup = ({
         <li
           key={logo.name}
           title={logo.name}
-          className="ring-background border-border flex size-7 items-center justify-center overflow-hidden rounded-full border bg-white ring-2"
+          className="ring-background border-border bg-background flex size-7 items-center justify-center overflow-hidden rounded-full border ring-2"
         >
           <img
             src={logo.src}
             alt={logo.name}
             width={16}
             height={16}
-            className="size-4 object-contain"
+            className={cn("size-4 object-contain", logo.mono && "dark:invert")}
           />
         </li>
       ))}
