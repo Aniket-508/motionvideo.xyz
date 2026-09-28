@@ -3,16 +3,9 @@ import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import { site } from "@/lib/site";
+import { themeScript } from "@/lib/theme";
 
 import appCss from "../styles.css?url";
-
-// Follow the OS color scheme before first paint to avoid a flash.
-const themeScript = `(() => {
-  const m = matchMedia("(prefers-color-scheme: dark)");
-  const apply = () => document.documentElement.classList.toggle("dark", m.matches);
-  apply();
-  m.addEventListener("change", apply);
-})()`;
 
 const RootDocument = ({ children }: { children: React.ReactNode }) => (
   <html lang="en" suppressHydrationWarning>
@@ -42,13 +35,13 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: `${site.tagline} | ${site.domain}` },
+      { title: `${site.tagline} | ${site.name}` },
       { name: "description", content: site.description },
       { name: "color-scheme", content: "light dark" },
-      { property: "og:title", content: `${site.tagline} | ${site.domain}` },
+      { property: "og:title", content: `${site.tagline} | ${site.name}` },
       { property: "og:description", content: site.description },
       { property: "og:url", content: site.url },
-      { property: "og:site_name", content: site.domain },
+      { property: "og:site_name", content: site.name },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

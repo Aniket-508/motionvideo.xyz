@@ -1,10 +1,10 @@
-import { Link, createFileRoute, getRouteApi } from "@tanstack/react-router";
+import { createFileRoute, getRouteApi } from "@tanstack/react-router";
 import { MailCheckIcon } from "lucide-react";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { z } from "zod";
 
-import { Logomark } from "@/components/logomark";
+import { Brand } from "@/components/site-chrome";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -63,13 +63,7 @@ const SignIn = () => {
 
   return (
     <main className="flex min-h-svh flex-col items-center justify-center gap-6 p-6">
-      <Link
-        to="/"
-        className="flex items-center gap-2 font-semibold tracking-tight"
-      >
-        <Logomark className="h-5 w-auto" />
-        {site.domain}
-      </Link>
+      <Brand />
       <Card className="w-full max-w-sm">
         {status === "sent" ? (
           <CardHeader>
@@ -141,7 +135,7 @@ export const Route = createFileRoute("/sign-in")({
   component: SignIn,
   head: () => ({
     meta: [
-      { title: `Sign in | ${site.domain}` },
+      { title: `Sign in | ${site.name}` },
       { content: "noindex", name: "robots" },
     ],
   }),

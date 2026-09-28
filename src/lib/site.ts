@@ -1,7 +1,7 @@
 // Site-wide copy and links. Edit here instead of hunting through components.
 
 export const site = {
-  name: "motionvideo",
+  name: "MotionVideo",
   domain: "motionvideo.xyz",
   url: "https://motionvideo.xyz",
   tagline: "Motion videos, animated by your agent.",
@@ -17,10 +17,36 @@ export const site = {
   legalUpdatedAt: "September 28, 2026",
 } as const;
 
-export const agents = ["Claude Code", "Cursor", "Codex"] as const;
+export interface Logo {
+  name: string;
+  src: string;
+}
+
+// Shown as avatar groups in the hero. Logos live in public/logos.
+export const agents: readonly Logo[] = [
+  { name: "Claude Code", src: "/logos/claude-code.svg" },
+  { name: "Codex", src: "/logos/codex.svg" },
+  { name: "Cursor", src: "/logos/cursor.svg" },
+  { name: "Gemini CLI", src: "/logos/gemini-cli.svg" },
+  { name: "GitHub Copilot", src: "/logos/github-copilot.svg" },
+];
+
+export const renderers: readonly Logo[] = [
+  { name: "Remotion", src: "/logos/remotion.png" },
+  { name: "HyperFrames", src: "/logos/hyperframes.png" },
+  { name: "Editframe", src: "/logos/editframe.png" },
+  { name: "fframes", src: "/logos/fframes.svg" },
+];
+
+// Rendered videos. Empty entries show the animated placeholder instead.
+export const videos = {
+  hero: "",
+  walkthrough: "",
+  teaser: "",
+} as const;
 
 export const steps = [
-  "Buy once and accept the invite to the private GitHub repo. Copy the skills folder into your project; your agent installs Remotion on the first run.",
+  "Buy once and accept the invite to the private GitHub repo. Copy the skills folder into your project; your agent sets up your renderer on the first run.",
   "Ask for a video, like “a 15 second teaser for the new command palette”.",
   "Your agent drafts a storyboard, then rebuilds the screens from your design system.",
   "It checks key frames against the framing rules before rendering the final file.",
@@ -78,7 +104,7 @@ export const faqs = [
 ] as const;
 
 export const perks = [
-  "Works with Claude Code, Cursor, and Codex",
+  "Works with any coding agent and any renderer",
   "Skills, a reference film, presets, and a cursor set",
   "Works on your codebase or any live site",
   "One license, any repo, client work included",

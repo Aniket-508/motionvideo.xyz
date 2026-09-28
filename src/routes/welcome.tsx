@@ -1,5 +1,4 @@
 import {
-  Link,
   createFileRoute,
   getRouteApi,
   redirect,
@@ -9,7 +8,7 @@ import { LoaderIcon, MailCheckIcon, PartyPopperIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 
-import { Logomark } from "@/components/logomark";
+import { Brand } from "@/components/site-chrome";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -120,13 +119,7 @@ const Welcome = () => {
 
   return (
     <main className="flex min-h-svh flex-col items-center justify-center gap-6 p-6">
-      <Link
-        to="/"
-        className="flex items-center gap-2 font-semibold tracking-tight"
-      >
-        <Logomark className="h-5 w-auto" />
-        {site.domain}
-      </Link>
+      <Brand />
       <Card className="w-full max-w-sm">
         {checkout.succeeded && checkout.email ? (
           <>
@@ -177,7 +170,7 @@ export const Route = createFileRoute("/welcome")({
   component: Welcome,
   head: () => ({
     meta: [
-      { title: `Welcome | ${site.domain}` },
+      { title: `Welcome | ${site.name}` },
       { content: "noindex", name: "robots" },
     ],
   }),

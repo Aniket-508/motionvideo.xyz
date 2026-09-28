@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-// motionvideo logomark. Inherits `currentColor`; size it with `className`.
+// MotionVideo logomark. Inherits `currentColor`; size it with `className`.
 export const Logomark = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

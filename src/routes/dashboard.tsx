@@ -108,7 +108,7 @@ const Dashboard = () => {
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
-  head: () => ({ meta: [{ title: `Dashboard | ${site.domain}` }] }),
+  head: () => ({ meta: [{ title: `Dashboard | ${site.name}` }] }),
   loader: async () => {
     const account = await getAccount();
     if (!account) {

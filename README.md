@@ -59,4 +59,4 @@ pnpm dev                         # http://localhost:3000
 
 ## Editing content
 
-Copy, FAQ, and links live in `src/lib/site.ts`. PPP tiers live in `src/lib/ppp.ts`. The demo frames in `src/components/demo-frame.tsx` are CSS placeholders; swap them for `<video>` renders when you have them.
+Copy, FAQ, and links live in `src/lib/site.ts`. PPP tiers live in `src/lib/ppp.ts`. Video URLs live in `videos` in `src/lib/site.ts`; an empty entry shows the CSS placeholder from `src/components/demo-frame.tsx`. Agent and renderer logos live in `public/logos` (agent icons from LobeHub Icons, MIT).

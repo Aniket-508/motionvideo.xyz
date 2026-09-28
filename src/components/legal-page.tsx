@@ -58,7 +58,7 @@ export const SupportEmail = () => (
 
 export const legalHead = (title: string, description: string) => ({
   meta: [
-    { title: `${title} | ${site.domain}` },
+    { title: `${title} | ${site.name}` },
     { content: description, name: "description" },
   ],
 });

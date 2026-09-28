@@ -132,7 +132,7 @@
     @apply font-sans;
   }
 }
-/* motionvideo demo frame animations */
+/* Demo frame animations */
 @theme {
   /* Main call-to-action button (`<Button variant="cta" size="cta">`). */
   --color-cta-from: #ffdd73;
