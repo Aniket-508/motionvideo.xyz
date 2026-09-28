@@ -1,13 +1,12 @@
 import { META_THEME_COLORS, SITE } from "@/constants/site";
 import { absoluteUrl } from "@/constants/url";
 
-// Square app icon until there is a 1200×630 Open Graph image; paired with the
-// "summary" Twitter card, which expects a square image.
+// Static 1200×630 share image (public/og.png).
 const OG_IMAGE = {
-  alt: SITE.NAME,
-  height: "512",
-  url: absoluteUrl("/brand/motionvideo-app-icon-512.png"),
-  width: "512",
+  alt: `${SITE.NAME}: ${SITE.TAGLINE}`,
+  height: "630",
+  url: absoluteUrl("/og.png"),
+  width: "1200",
 } as const;
 
 interface CreateMetadataOptions {
@@ -83,8 +82,9 @@ export const baseMetadata = {
     { content: OG_IMAGE.alt, property: "og:image:alt" },
     { content: OG_IMAGE.width, property: "og:image:width" },
     { content: OG_IMAGE.height, property: "og:image:height" },
-    { content: "summary", name: "twitter:card" },
+    { content: "summary_large_image", name: "twitter:card" },
     { content: SITE.AUTHOR.TWITTER, name: "twitter:creator" },
     { content: OG_IMAGE.url, name: "twitter:image" },
+    { content: OG_IMAGE.alt, name: "twitter:image:alt" },
   ],
 };

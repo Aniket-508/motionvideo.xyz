@@ -1,63 +1,60 @@
-# motionvideo.xyz
+<div align="center">
 
-Marketing and checkout site for the motionvideo agent skill pack. The site is open source; the skill pack itself lives in a private repository that buyers get access to through Polar.
+<a href="https://motionvideo.xyz">
+  <img src="public/og.png" alt="MotionVideo: Motion design, written in code." width="800" />
+</a>
 
-**Stack:** TanStack Start + shadcn/ui on Cloudflare Workers, D1 (SQLite) via Drizzle, Better Auth (email magic links), Resend (email), Polar (payments).
+# MotionVideo
+
+**Motion design, written in code.**
+
+Agent skills that teach your coding agent motion design: timing, easing, and choreography.<br /> Showreels, intros, and launch films, rendered from a prompt.
+
+[Website](https://motionvideo.xyz) · [About](https://motionvideo.xyz/about) · [Contact](https://motionvideo.xyz/contact) · [Development](DEVELOPMENT.md)
+
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fmotionvideo.xyz&label=motionvideo.xyz&style=flat-square)](https://motionvideo.xyz) [![TanStack Start](https://img.shields.io/badge/TanStack_Start-React-FF4154?style=flat-square&logo=tanstack&logoColor=white)](https://tanstack.com/start) [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat-square&logo=cloudflareworkers&logoColor=white)](https://workers.cloudflare.com) [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org) [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com) [![Polar](https://img.shields.io/badge/Payments-Polar-0062FF?style=flat-square)](https://polar.sh) [![License: MIT](https://img.shields.io/github/license/motionvideohq/motionvideo.xyz?style=flat-square)](LICENSE) [![X](https://img.shields.io/badge/@alaymanguy-000000?style=flat-square&logo=x&logoColor=white)](https://x.com/alaymanguy)
+
+</div>
+
+---
+
+This repository is the marketing and checkout site for MotionVideo. The site is open source; the skill pack itself is sold separately and delivered as access to a private GitHub repository through [Polar](https://polar.sh).
 
 ## How it works
 
-- **Checkout**: every "Buy" button links to `/checkout`, which redirects straight to a Polar checkout (no account needed). `?products=<id>` (repeatable) checks out other Polar products. Polar's success redirect lands on `/welcome`, which emails the buyer a sign-in link to the address on the checkout.
-- **Sign in**: email magic links only, and only for emails with a paid Polar order (the gate is in `src/server/auth.ts`). Requests are rate limited to 3/minute per IP, stored in D1.
-- **PPP pricing**: `src/lib/ppp.ts` maps countries to discount tiers (20–60%). The visitor's country comes from Cloudflare (`request.cf.country`). The server attaches the matching code-less Polar discount at checkout. A tier only applies when its Polar discount is set up, so the price shown on the site always matches the price charged. Promo codes you create in Polar can still be entered on the checkout page.
-- **Webhooks**: `POST /api/webhook/polar` verifies Polar's signature with `POLAR_WEBHOOK_SECRET`; `order.paid` and `customer.state_changed` handlers are stubs.
-- **Delivery**: a Polar _GitHub Repository Access_ benefit on the product invites the buyer to the private repo. The dashboard links to the Polar customer portal, where buyers claim access and download receipts.
-- **Purchase status**: read from Polar by the buyer's email (customers → orders). The app stores no order data.
-- **Legal**: `/terms`, `/privacy`, `/refunds`, `/dpa`. The seller name, jurisdiction, and "last updated" date live in `SITE.LEGAL` (`src/constants/site.ts`); the support email is `LINK.EMAIL` (`src/constants/links.ts`).
-- **Pages**: `/about`, `/brand` (downloads in `public/brand`), `/contact`. These and the legal pages live in `src/routes/_pages/` and share one pathless layout route (`src/routes/_pages.tsx`) for the header, footer, and page width. The contact form emails `LINK.EMAIL` via Resend with Reply-To set to the sender; a Workers rate limit (`CONTACT_LIMITER`, 3/min per IP) and a honeypot field keep spam down.
+- **Checkout**: buy buttons go straight to a Polar checkout, no account needed. After paying, `/welcome` emails the buyer a sign-in link.
+- **Access**: passwordless magic links, only for emails with a paid order. The dashboard links to the Polar customer portal, where buyers claim the GitHub repository invite.
+- **Pricing**: purchasing-power pricing by country (20–60% off), applied as a Polar discount at checkout so the price shown is the price charged.
+- **Content**: landing page, about, brand assets, contact form, and legal pages (terms, privacy, refunds, DPA), with Open Graph tags and JSON-LD on every page.
 
-## Local development
+## Tech stack
+
+| Area | Tools |
+| --- | --- |
+| Framework | [TanStack Start](https://tanstack.com/start) (React 19, file-based routing, server functions) |
+| UI | [shadcn/ui](https://ui.shadcn.com) on [Base UI](https://base-ui.com), [Tailwind CSS v4](https://tailwindcss.com), [Lucide](https://lucide.dev) icons, [player.style](https://player.style) (Sutro) video player |
+| Hosting | [Cloudflare Workers](https://workers.cloudflare.com), deployed with [Wrangler](https://developers.cloudflare.com/workers/wrangler/) and Workers Builds |
+| Data | [Cloudflare D1](https://developers.cloudflare.com/d1/) (SQLite) with [Drizzle ORM](https://orm.drizzle.team), [R2](https://developers.cloudflare.com/r2/) for video assets |
+| Auth | [Better Auth](https://www.better-auth.com) (email magic links) |
+| Email | [Resend](https://resend.com) (sign-in and contact messages), Cloudflare Email Routing (inbound) |
+| Payments | [Polar](https://polar.sh) as merchant of record, with GitHub repository access delivery |
+| Tooling | [pnpm](https://pnpm.io), [Vite](https://vite.dev), [Oxlint](https://oxc.rs) + [Oxfmt](https://oxc.rs) via [Ultracite](https://www.ultracite.ai), [Lefthook](https://lefthook.dev) |
+
+## Getting started
 
 ```bash
 pnpm install
-cp .env.example .env            # then fill in the values
-pnpm db:migrate:local            # create the local D1 tables
-pnpm dev                         # http://localhost:3000
+cp .env.example .env
+pnpm db:migrate:local
+pnpm dev
 ```
 
-- Leave `RESEND_API_KEY` empty to print magic links to the dev server console.
-- Set `POLAR_ACCESS_TOKEN` (organization token; use `POLAR_SERVER=sandbox` with a [Polar sandbox](https://sandbox.polar.sh) org for test runs), then run `pnpm polar:setup`. It creates the product and PPP discounts and writes `POLAR_PRODUCT_ID` and `POLAR_PPP_DISCOUNTS` into `.env`.
-- Set `DEV_COUNTRY=IN` (or any country code) to preview PPP pricing.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for environment variables, Polar setup, deployment, scripts, and the project structure.
 
-## Deploy (Cloudflare Workers)
+## License
 
-1. `pnpm wrangler login`
-2. The production D1 database (`motionvideo`) already exists and its id is in `wrangler.jsonc`. For a fresh account, run `pnpm wrangler d1 create motionvideo` and paste the new `database_id`.
-3. Check `vars` in `wrangler.jsonc` (`BETTER_AUTH_URL`, `EMAIL_FROM`).
-4. Polar (production): put an organization access token in `.env` and run `pnpm polar:setup`. In the Polar dashboard, add a GitHub Repository Access benefit for the private skill repo to the product, and create a webhook endpoint for `https://<domain>/api/webhook/polar` (format: raw, events `order.paid` and `customer.state_changed`).
-5. Resend: verify the sending domain and create an API key.
-6. Set the secrets:
-   ```bash
-   pnpm wrangler secret put BETTER_AUTH_SECRET   # openssl rand -base64 32
-   pnpm wrangler secret put RESEND_API_KEY
-   pnpm wrangler secret put POLAR_ACCESS_TOKEN
-   pnpm wrangler secret put POLAR_WEBHOOK_SECRET
-   pnpm wrangler secret put POLAR_PRODUCT_ID
-   pnpm wrangler secret put POLAR_PPP_DISCOUNTS
-   ```
-7. `pnpm run deploy` builds, applies D1 migrations remotely, and deploys. (Plain `pnpm deploy` is a built-in pnpm command and does something else.)
-8. Custom domains (`motionvideo.xyz`, `www.motionvideo.xyz`) are declared in `wrangler.jsonc` `routes` and attached on deploy; the zone must be active on the same Cloudflare account. `src/server.ts` 301-redirects `www` to the apex, and `workers.dev` is disabled.
+The website source code is released under the [MIT License](LICENSE). The MotionVideo skill pack, brand name, and logomark are not covered by this license; the skill pack is sold separately under its own [terms](https://motionvideo.xyz/terms).
 
-## Scripts
+## Made by
 
-| Script | Purpose |
-| --- | --- |
-| `pnpm cf-typegen` | Regenerate `worker-configuration.d.ts` after env changes |
-| `pnpm auth:schema` | Regenerate the Drizzle schema from the Better Auth config |
-| `pnpm db:generate` | Generate a SQL migration from schema changes |
-| `pnpm db:migrate:local` | Apply migrations to local D1 |
-| `pnpm db:migrate:remote` | Apply migrations to production D1 |
-| `pnpm polar:setup` | Create/reuse the Polar product and PPP discounts |
-
-## Editing content
-
-Site copy and links live in `src/constants/` (`site`, `links`, `routes`, `faqs`, `features`, `steps`, `pricing`, `stack`, `products`, `videos`). SEO lives in `src/seo/`: `createMetadata()` for per-route head tags and `baseMetadata` on the root route, plus JSON-LD (WebSite, Organization, Product, FAQPage, BreadcrumbList) emitted through `head().scripts`. PPP tiers live in `src/lib/ppp.ts`. Video URLs live in `VIDEOS` in `src/constants/videos.ts` (served from the R2 bucket `motionvideo-assets` at `https://assets.motionvideo.xyz`; upload with `pnpm wrangler r2 object put motionvideo-assets/videos/<file> --file <file> --content-type video/mp4 --remote`) and play in the Sutro theme from [player.style](https://player.style); an empty entry shows the CSS placeholder from `src/components/demo-frame.tsx`. Agent and renderer logos live in `public/logos` (agent icons from LobeHub Icons, MIT).
+[Aniket Pawar](https://www.aniketpawar.com) ([@alaymanguy](https://x.com/alaymanguy)), who also runs [Shadcn Labs](https://www.shadcn-labs.com).
