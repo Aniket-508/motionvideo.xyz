@@ -31,7 +31,7 @@ pnpm dev                         # http://localhost:3000
 1. `pnpm wrangler login`
 2. The production D1 database (`motionvideo`) already exists and its id is in `wrangler.jsonc`. For a fresh account, run `pnpm wrangler d1 create motionvideo` and paste the new `database_id`.
 3. Check `vars` in `wrangler.jsonc` (`BETTER_AUTH_URL`, `EMAIL_FROM`).
-4. Polar (production): put an organization access token in `.env` and run `pnpm polar:setup`. In the Polar dashboard, add a GitHub Repository Access benefit for the private skill repo to the product, and create a webhook endpoint for `https://<domain>/api/webhook/polar` (format: raw, events `order.paid` and `customer.state_changed`). See `POLAR_SETUP.md`.
+4. Polar (production): put an organization access token in `.env` and run `pnpm polar:setup`. In the Polar dashboard, add a GitHub Repository Access benefit for the private skill repo to the product, and create a webhook endpoint for `https://<domain>/api/webhook/polar` (format: raw, events `order.paid` and `customer.state_changed`).
 5. Resend: verify the sending domain and create an API key.
 6. Set the secrets:
    ```bash
