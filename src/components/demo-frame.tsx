@@ -101,7 +101,6 @@ export const DemoFrame = ({ src, variant, caption }: DemoFrameProps) => (
             src={`${src}#t=0.1`}
             playsInline
             preload="metadata"
-            crossOrigin="anonymous"
             className="size-full object-cover"
           />
         </MediaThemeSutro>

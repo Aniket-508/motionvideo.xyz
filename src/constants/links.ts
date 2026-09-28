@@ -14,3 +14,13 @@ export const LINK = {
   // Personal account: MotionVideo has no X account of its own yet.
   X: "https://x.com/alaymanguy",
 } as const;
+
+// Large media lives in the R2 bucket `motionvideo-assets`, served from its
+// custom domain so it doesn't ship with (or count against) the Worker.
+const ASSETS_URL = "https://assets.motionvideo.xyz";
+
+export const ASSETS = {
+  VIDEO_HERO: `${ASSETS_URL}/videos/motionvideo-hero.mp4`,
+  VIDEO_LAUNCH: `${ASSETS_URL}/videos/shadercn-launch.mp4`,
+  VIDEO_SHOWREEL: `${ASSETS_URL}/videos/aniketpawar-reel.mp4`,
+} as const;

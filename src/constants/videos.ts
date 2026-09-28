@@ -1,7 +1,9 @@
-// Rendered videos (files in public/videos). Empty entries show the animated
-// placeholder instead.
+import { ASSETS } from "./links";
+
+// Rendered videos on the assets CDN (see ASSETS). Empty entries show the
+// animated placeholder instead.
 export const VIDEOS = {
-  hero: "",
-  showreel: "/videos/aniketpawar-reel.mp4",
-  launch: "/videos/shadercn-launch.mp4",
+  hero: ASSETS.VIDEO_HERO,
+  launch: ASSETS.VIDEO_LAUNCH,
+  showreel: ASSETS.VIDEO_SHOWREEL,
 } as const;
