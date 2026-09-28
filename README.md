@@ -6,12 +6,13 @@ Marketing and checkout site for the motionvideo agent skill pack. The site is op
 
 ## How it works
 
-- **Sign in**: email magic link only (Better Auth `magicLink` plugin). Requests are rate limited to 3/minute per IP, stored in D1.
-- **Checkout**: every "Buy" button is a link to `/checkout`, which sends signed-out visitors to sign in first, sends buyers to the dashboard, and otherwise redirects to a Polar checkout for the $79 product. `?products=<id>` (repeatable) checks out other Polar products instead.
+- **Checkout**: every "Buy" button links to `/checkout`, which redirects straight to a Polar checkout (no account needed). `?products=<id>` (repeatable) checks out other Polar products. Polar's success redirect lands on `/welcome`, which emails the buyer a sign-in link to the address on the checkout.
+- **Sign in**: email magic links only, and only for emails with a paid Polar order (the gate is in `src/server/auth.ts`). Requests are rate limited to 3/minute per IP, stored in D1.
 - **PPP pricing**: `src/lib/ppp.ts` maps countries to discount tiers (20–60%). The visitor's country comes from Cloudflare (`request.cf.country`). The server attaches the matching code-less Polar discount at checkout. A tier only applies when its Polar discount is set up, so the price shown on the site always matches the price charged. Promo codes you create in Polar can still be entered on the checkout page.
-- **Webhooks**: `POST /api/webhook/polar` verifies Polar's signature with `POLAR_WEBHOOK_SECRET`; `order.paid` and `customer.state_changed` handlers are TODO stubs.
+- **Webhooks**: `POST /api/webhook/polar` verifies Polar's signature with `POLAR_WEBHOOK_SECRET`; `order.paid` and `customer.state_changed` handlers are stubs.
 - **Delivery**: a Polar _GitHub Repository Access_ benefit on the product invites the buyer to the private repo. The dashboard links to the Polar customer portal, where buyers claim access and download receipts.
-- **Purchase status**: read from Polar orders by `externalCustomerId` (the Better Auth user id). The app stores no order data.
+- **Purchase status**: read from Polar by the buyer's email (customers → orders). The app stores no order data.
+- **Legal**: `/terms`, `/privacy`, `/refunds`. The seller name, jurisdiction, support email, and "last updated" date live in `src/lib/site.ts`.
 
 ## Local development
 

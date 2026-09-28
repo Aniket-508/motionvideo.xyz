@@ -1,4 +1,4 @@
-import { createFileRoute, getRouteApi } from "@tanstack/react-router";
+import { Link, createFileRoute, getRouteApi } from "@tanstack/react-router";
 
 import { DemoFrame } from "@/components/demo-frame";
 import { BuyButton, PppNotice, PriceCard } from "@/components/pricing";
@@ -160,6 +160,17 @@ const Landing = () => {
             Buy once, keep it forever.
           </h2>
           <PriceCard pricing={pricing} />
+          <p className="text-muted-foreground text-center text-sm">
+            Prices in USD. Taxes are calculated at checkout by Polar, our
+            merchant of record. See the{" "}
+            <Link
+              to="/refunds"
+              className="text-foreground underline underline-offset-4"
+            >
+              refund policy
+            </Link>
+            .
+          </p>
         </section>
       </main>
       <SiteFooter />

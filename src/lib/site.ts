@@ -10,12 +10,17 @@ export const site = {
   githubUrl: "https://github.com/motionvideohq/motionvideo.xyz",
   authorName: "Aniket",
   authorUrl: "https://github.com/Aniket-508",
+  supportEmail: "hello@motionvideo.xyz",
+  // Seller identity and governing law used on the terms/privacy/refund pages.
+  operator: "Aniket Pawar",
+  jurisdiction: "India",
+  legalUpdatedAt: "September 28, 2026",
 } as const;
 
 export const agents = ["Claude Code", "Cursor", "Codex"] as const;
 
 export const steps = [
-  "Download the pack and drop the skills folder into your repo. Your agent installs Remotion on the first run.",
+  "Buy once and accept the invite to the private GitHub repo. Copy the skills folder into your project; your agent installs Remotion on the first run.",
   "Ask for a video, like “a 15 second teaser for the new command palette”.",
   "Your agent drafts a storyboard, then rebuilds the screens from your design system.",
   "It checks key frames against the framing rules before rendering the final file.",

@@ -3,11 +3,9 @@ import {
   getRouteApi,
   redirect,
   useNavigate,
-  useRouter,
 } from "@tanstack/react-router";
-import { CircleCheckIcon, LoaderIcon } from "lucide-react";
+import { CircleCheckIcon } from "lucide-react";
 import { useState } from "react";
-import { z } from "zod";
 
 import { BuyButton, PppNotice } from "@/components/pricing";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
@@ -24,16 +22,10 @@ import { authClient } from "@/lib/auth-client";
 import { site } from "@/lib/site";
 import { getAccount, getPortalUrl } from "@/server/functions";
 
-interface DashboardSearch {
-  checkout_id?: string;
-}
-
 const routeApi = getRouteApi("/dashboard");
 
 const PurchaseCard = () => {
   const account = routeApi.useLoaderData();
-  const { checkout_id: checkoutId } = routeApi.useSearch();
-  const router = useRouter();
   const [busy, setBusy] = useState(false);
 
   const openPortal = async () => {
@@ -60,26 +52,6 @@ const PurchaseCard = () => {
         <CardFooter>
           <Button variant="cta" size="cta" onClick={openPortal} disabled={busy}>
             {busy ? "Opening…" : "Open customer portal"}
-          </Button>
-        </CardFooter>
-      </Card>
-    );
-  }
-
-  if (checkoutId) {
-    return (
-      <Card>
-        <CardHeader>
-          <LoaderIcon aria-hidden className="mb-2 size-6 animate-spin" />
-          <CardTitle>Confirming your payment</CardTitle>
-          <CardDescription>
-            Thanks for your purchase! It can take a few seconds for the payment
-            to be confirmed.
-          </CardDescription>
-        </CardHeader>
-        <CardFooter>
-          <Button variant="outline" onClick={() => router.invalidate()}>
-            Check again
           </Button>
         </CardFooter>
       </Card>
@@ -144,8 +116,4 @@ export const Route = createFileRoute("/dashboard")({
     }
     return account;
   },
-  // Polar appends `?checkout_id=` when it redirects back after payment.
-  validateSearch: (search): DashboardSearch => ({
-    checkout_id: z.string().safeParse(search.checkout_id).data,
-  }),
 });

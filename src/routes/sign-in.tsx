@@ -83,10 +83,10 @@ const SignIn = () => {
         ) : (
           <>
             <CardHeader>
-              <CardTitle>Sign in</CardTitle>
+              <CardTitle>Sign in to your purchase</CardTitle>
               <CardDescription>
-                Enter your email and we’ll send you a sign-in link. No password
-                needed.
+                Enter the email you paid with and we’ll send a sign-in link
+                there. No password needed.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -119,6 +119,16 @@ const SignIn = () => {
                     : "Email me a sign-in link"}
                 </Button>
               </form>
+              <p className="text-muted-foreground mt-4 text-sm">
+                Don’t own {site.name} yet?{" "}
+                <a
+                  href="/checkout"
+                  className="text-foreground underline underline-offset-4"
+                >
+                  Buy it here
+                </a>
+                .
+              </p>
             </CardContent>
           </>
         )}
@@ -129,7 +139,12 @@ const SignIn = () => {
 
 export const Route = createFileRoute("/sign-in")({
   component: SignIn,
-  head: () => ({ meta: [{ title: `Sign in | ${site.domain}` }] }),
+  head: () => ({
+    meta: [
+      { title: `Sign in | ${site.domain}` },
+      { content: "noindex", name: "robots" },
+    ],
+  }),
   validateSearch: (search): SignInSearch => ({
     error: z.string().safeParse(search.error).data,
     redirect: safeRedirect.safeParse(search.redirect).data,
