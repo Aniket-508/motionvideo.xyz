@@ -4,22 +4,19 @@ import {
   redirect,
   useRouter,
 } from "@tanstack/react-router";
-import { LoaderIcon, PartyPopperIcon } from "lucide-react";
+import { LoaderIcon, MailCheckIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { z } from "zod";
 
 import { ConfettiSideCannons } from "@/components/confetti";
-import { Brand } from "@/components/site-chrome";
-import { Button } from "@/components/ui/button";
 import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
+  AuthCard,
+  LinkSentMessage,
+  SignInPanel,
+  StatusPanel,
+} from "@/components/login-form";
+import { Button } from "@/components/ui/button";
 import { SITE } from "@/constants/site";
 import { authClient } from "@/lib/auth-client";
 import { createMetadata } from "@/seo/metadata";
@@ -37,44 +34,35 @@ const RETRY_DELAY_MS = 3000;
 
 const routeApi = getRouteApi("/welcome");
 
-const ThanksHeader = ({
+// Stacked under the invisible sign-in form so this page keeps the exact size
+// of /sign-in.
+const ThanksView = ({
   children,
+  icon,
   preorder,
-  released,
+  action,
 }: {
   children: ReactNode;
+  icon: ReactNode;
   preorder: boolean;
-  released: boolean;
+  action?: ReactNode;
 }) => (
-  <EmptyHeader>
-    <EmptyMedia className="text-primary">
-      <PartyPopperIcon aria-hidden className="size-8" />
-    </EmptyMedia>
-    <EmptyTitle className="text-base">
-      Thanks for {preorder ? "preordering" : "buying"} {SITE.NAME}!
-    </EmptyTitle>
-    <EmptyDescription className="flex flex-col gap-2">
-      {preorder && !released && (
-        <span>
-          Your prepaid preorder is confirmed. The skill pack and GitHub access
-          arrive at launch, not immediately after checkout. Your receipt is
-          available in the customer portal now.
-        </span>
-      )}
-      <span>{children}</span>
-    </EmptyDescription>
-  </EmptyHeader>
+  <StatusPanel
+    action={action}
+    icon={icon}
+    title={`Thanks for ${preorder ? "preordering" : "buying"} ${SITE.NAME}!`}
+  >
+    {children}
+  </StatusPanel>
 );
 
 const SignInLink = ({
   email,
   preorder,
-  released,
   preview,
 }: {
   email: string;
   preorder: boolean;
-  released: boolean;
   preview: boolean;
 }) => {
   const started = useRef(false);
@@ -118,34 +106,41 @@ const SignInLink = ({
 
   if (status === "sending") {
     return (
-      <ThanksHeader preorder={preorder} released={released}>
+      <ThanksView
+        icon={
+          <LoaderIcon aria-hidden className="size-8 animate-spin text-black" />
+        }
+        preorder={preorder}
+      >
         Sending your sign-in link to <strong>{email}</strong>.
-      </ThanksHeader>
+      </ThanksView>
     );
   }
 
   if (status === "failed") {
     return (
-      <>
-        <ThanksHeader preorder={preorder} released={released}>
-          Your payment went through, but it hasn’t reached us yet. Try again in
-          a moment, or sign in later with <strong>{email}</strong>.
-        </ThanksHeader>
-        <EmptyContent>
+      <ThanksView
+        icon={<MailCheckIcon aria-hidden className="size-8 text-black" />}
+        preorder={preorder}
+        action={
           <Button size="lg" onClick={send}>
             Send the link again
           </Button>
-        </EmptyContent>
-      </>
+        }
+      >
+        Your payment went through, but it hasn’t reached us yet. Try again in a
+        moment, or sign in later with <strong>{email}</strong>.
+      </ThanksView>
     );
   }
 
   return (
-    <ThanksHeader preorder={preorder} released={released}>
-      We sent a sign-in link to <strong>{email}</strong>. Open it to view your
-      purchase in your dashboard. It expires in 15 minutes, and you can get a
-      new one from the sign-in page with the same email.
-    </ThanksHeader>
+    <ThanksView
+      icon={<MailCheckIcon aria-hidden className="size-8 text-black" />}
+      preorder={preorder}
+    >
+      <LinkSentMessage email={email} />
+    </ThanksView>
   );
 };
 
@@ -156,40 +151,48 @@ const Welcome = () => {
   const router = useRouter();
 
   return (
-    <main className="flex min-h-svh flex-col items-center justify-center gap-6 p-6">
-      <Brand />
-      <Empty className="w-full max-w-sm flex-none">
+    <main className="flex min-h-svh items-center justify-center p-6">
+      <AuthCard>
+        <SignInPanel
+          hidden
+          email=""
+          error={null}
+          onEmailChange={() => null}
+          onSubmit={(event) => event.preventDefault()}
+          status="idle"
+        />
         {checkout.succeeded && checkout.email ? (
           <>
             <ConfettiSideCannons />
             <SignInLink
               email={checkout.email}
               preorder={checkout.preorder}
-              released={checkout.released}
               preview={preview}
             />
           </>
         ) : (
-          <>
-            <EmptyHeader>
-              <EmptyMedia className="text-muted-foreground">
-                <LoaderIcon aria-hidden className="size-8 animate-spin" />
-              </EmptyMedia>
-              <EmptyTitle className="text-base">
-                Confirming your payment
-              </EmptyTitle>
-              <EmptyDescription>
-                This usually takes a few seconds.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button variant="outline" onClick={() => router.invalidate()}>
+          <StatusPanel
+            icon={
+              <LoaderIcon
+                aria-hidden
+                className="size-8 animate-spin text-black"
+              />
+            }
+            title="Confirming your payment"
+            action={
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => router.invalidate()}
+              >
                 Check again
               </Button>
-            </EmptyContent>
-          </>
+            }
+          >
+            This usually takes a few seconds.
+          </StatusPanel>
         )}
-      </Empty>
+      </AuthCard>
     </main>
   );
 };

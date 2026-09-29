@@ -54,7 +54,7 @@ const PurchaseCard = () => {
 
   if (account.purchased) {
     return (
-      <Empty>
+      <Empty className="bg-card border border-solid">
         <EmptyHeader>
           <EmptyMedia className="text-primary">
             <CircleCheckIcon aria-hidden className="size-8" />
@@ -113,7 +113,9 @@ const Dashboard = () => {
             <p className="text-muted-foreground text-sm">{email}</p>
           </div>
           {preview ? (
-            <span className="text-muted-foreground text-sm">Local UI preview</span>
+            <span className="text-muted-foreground text-sm">
+              Local UI preview
+            </span>
           ) : (
             <Button variant="outline" onClick={signOut}>
               Sign out
@@ -131,7 +133,8 @@ export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
   head: () => createMetadata({ noIndex: true, title: "Dashboard" }),
   validateSearch: (search) => ({
-    preview: search.preview === "purchased" ? ("purchased" as const) : undefined,
+    preview:
+      search.preview === "purchased" ? ("purchased" as const) : undefined,
   }),
   loaderDeps: ({ search }) => ({ preview: search.preview }),
   loader: async ({ deps }) => {

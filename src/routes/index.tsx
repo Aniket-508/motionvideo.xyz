@@ -68,9 +68,7 @@ const Landing = () => {
                   {offer.released ? "See pricing" : "Preorder"}
                 </a>
                 <span className="text-muted-foreground text-sm">
-                  {offer.released
-                    ? "One-time purchase"
-                    : "Access at launch"}
+                  {offer.released ? "One-time purchase" : "Access at launch"}
                 </span>
               </div>
             </div>
@@ -190,9 +188,7 @@ const Landing = () => {
 
           <section id="pricing" className="flex scroll-mt-8 flex-col gap-8">
             <h2 className={cn(sectionTitle, "text-center")}>
-              {offer.active
-                ? "Preorder price. Every update."
-                : "One price. Every update."}
+              One price. Every update.
             </h2>
             <PriceCard offer={offer} />
           </section>

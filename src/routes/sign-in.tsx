@@ -1,22 +1,10 @@
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
-import { MailCheckIcon } from "lucide-react";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { z } from "zod";
 
-import { Brand } from "@/components/site-chrome";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { LoginForm } from "@/components/login-form";
 import { ROUTES } from "@/constants/routes";
-import { SITE } from "@/constants/site";
 import { authClient } from "@/lib/auth-client";
 import { createMetadata } from "@/seo/metadata";
 
@@ -64,63 +52,14 @@ const SignIn = () => {
   };
 
   return (
-    <main className="flex min-h-svh flex-col items-center justify-center gap-6 p-6">
-      <Brand />
-      <Card className="w-full max-w-sm">
-        {status === "sent" ? (
-          <CardHeader>
-            <MailCheckIcon aria-hidden className="mb-2 size-6" />
-            <CardTitle>Check your email</CardTitle>
-            <CardDescription>
-              We sent a sign-in link to <strong>{email}</strong>. It expires in
-              15 minutes.
-            </CardDescription>
-          </CardHeader>
-        ) : (
-          <>
-            <CardHeader>
-              <CardTitle>Sign in to your purchase</CardTitle>
-              <CardDescription>
-                Enter the email you paid with and we’ll send a sign-in link
-                there. No password needed.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={onSubmit} className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                </div>
-                {error && (
-                  <p role="alert" className="text-destructive text-sm">
-                    {error}
-                  </p>
-                )}
-                <Button type="submit" size="lg" disabled={status === "sending"}>
-                  {status === "sending" ? "Sending…" : "Send link"}
-                </Button>
-              </form>
-              <p className="text-muted-foreground mt-4 text-sm">
-                Don’t own {SITE.NAME} yet?{" "}
-                <a
-                  href="/checkout"
-                  className="text-foreground underline underline-offset-4"
-                >
-                  Buy it here
-                </a>
-              </p>
-            </CardContent>
-          </>
-        )}
-      </Card>
+    <main className="flex min-h-svh items-center justify-center p-6">
+      <LoginForm
+        email={email}
+        error={error}
+        onEmailChange={setEmail}
+        onSubmit={onSubmit}
+        status={status}
+      />
     </main>
   );
 };

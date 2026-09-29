@@ -21,6 +21,8 @@ const preorderTicks = Array.from(
   { length: PREORDER_LIMIT },
   (_, index) => index
 );
+// Each slot uses three units plus one unit of gap; omit the final gap.
+const tickViewBox = `0 0 ${PREORDER_LIMIT * 4 - 1} 20`;
 
 export const BuyButton = ({ offer }: { offer: Offer }) => (
   <div className="flex flex-wrap items-center gap-4">
@@ -42,18 +44,9 @@ export const PriceCard = ({ offer }: { offer: Offer }) => (
     <CardHeader>
       <div className="flex flex-col gap-3">
         {offer.active && (
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-xs font-semibold tracking-widest uppercase">
-              Preorder offer
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-2.5 py-1 text-xs font-semibold text-green-700 dark:text-green-400">
-              <span aria-hidden className="relative flex size-1.5">
-                <span className="absolute inset-0 animate-ping rounded-full bg-green-600 opacity-75 motion-reduce:animate-none dark:bg-green-400" />
-                <span className="relative size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
-              </span>
-              LIVE
-            </span>
-          </div>
+          <span className="text-xs font-semibold tracking-widest uppercase">
+            Preorder offer
+          </span>
         )}
         <p className="flex flex-wrap items-baseline gap-2">
           <span className="text-4xl font-semibold tracking-tight">
@@ -71,35 +64,45 @@ export const PriceCard = ({ offer }: { offer: Offer }) => (
     <CardContent className="flex flex-col gap-6">
       {offer.active && (
         <div className="flex flex-col gap-2">
-          <div className="flex items-baseline justify-between gap-3 text-xs">
-            <span className="font-medium tabular-nums">
-              {offer.sold} / {offer.limit} paid preorders
+          <div className="flex items-center justify-between gap-3 text-xs">
+            <span className="text-muted-foreground inline-flex items-center gap-1.5 font-semibold">
+              <span aria-hidden className="relative flex size-1.5">
+                <span className="absolute inset-0 animate-ping rounded-full bg-green-600 opacity-75 motion-reduce:animate-none dark:bg-green-400" />
+                <span className="relative size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+              </span>
+              LIVE
             </span>
-            <span className="text-muted-foreground tabular-nums">
-              {Math.max(0, offer.limit - offer.sold)} left
+            <span className="tabular-nums">
+              <span className="text-foreground font-medium">
+                {Math.max(0, offer.limit - offer.sold)}
+              </span>{" "}
+              <span className="text-muted-foreground">left</span>
             </span>
           </div>
           <progress
             className="sr-only"
-            aria-label="Paid preorders"
-            value={offer.sold}
+            aria-label="Preorder spots remaining"
+            value={Math.max(0, offer.limit - offer.sold)}
             max={offer.limit}
           />
-          <div
+          <svg
             aria-hidden
-            className="grid grid-cols-[repeat(100,minmax(0,1fr))] gap-px"
+            className="h-5 w-full"
+            viewBox={tickViewBox}
+            preserveAspectRatio="none"
           >
             {preorderTicks.map((tick) => (
-              <span
+              <rect
                 key={tick}
-                aria-hidden
-                className={cn(
-                  "h-5 min-w-0 rounded-[1px]",
-                  tick < offer.sold ? "bg-green-600" : "bg-muted"
-                )}
+                x={tick * 4}
+                y="0"
+                width="3"
+                height="20"
+                rx="0.5"
+                className={tick >= offer.sold ? "fill-primary" : "fill-muted"}
               />
             ))}
-          </div>
+          </svg>
           <p className="text-muted-foreground text-xs leading-relaxed">
             Ends Thursday, October 1, 2026 (UTC), or when the first{" "}
             {offer.limit} paid orders are placed, whichever comes first.

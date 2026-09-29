@@ -10,7 +10,7 @@
 
 Agent skills that teach your coding agent motion design: timing, easing, and choreography.<br /> Showreels, intros, and launch films, rendered from a prompt.
 
-[Website](https://motionvideo.xyz) · [About](https://motionvideo.xyz/about) · [Contact](https://motionvideo.xyz/contact) · [Development](DEVELOPMENT.md)
+[Website](https://motionvideo.xyz) · [About](https://motionvideo.xyz/about) · [Contact](https://motionvideo.xyz/contact)
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fmotionvideo.xyz&label=motionvideo.xyz&style=flat-square)](https://motionvideo.xyz) [![TanStack Start](https://img.shields.io/badge/TanStack_Start-React-FF4154?style=flat-square&logo=tanstack&logoColor=white)](https://tanstack.com/start) [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat-square&logo=cloudflareworkers&logoColor=white)](https://workers.cloudflare.com) [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org) [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com) [![Polar](https://img.shields.io/badge/Payments-Polar-0062FF?style=flat-square)](https://polar.sh) [![License: MIT](https://img.shields.io/github/license/motionvideohq/motionvideo.xyz?style=flat-square)](LICENSE) [![X](https://img.shields.io/badge/@alaymanguy-000000?style=flat-square&logo=x&logoColor=white)](https://x.com/alaymanguy)
 
@@ -48,8 +48,6 @@ cp .env.example .env
 pnpm db:migrate:local
 pnpm dev
 ```
-
-See [DEVELOPMENT.md](DEVELOPMENT.md) for environment variables, Polar setup, deployment, scripts, and the project structure.
 
 ## License
 
