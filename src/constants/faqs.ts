@@ -12,7 +12,7 @@ export const FAQS = [
   {
     question: "Which coding agents are supported?",
     answer:
-      "Any agent that can read instruction files from your repository, including Claude Code, Codex, Cursor, Gemini CLI, and GitHub Copilot.",
+      "Any agent that can read instruction files from your repository, including Claude Code, Codex, Cursor, Antigravity, and GitHub Copilot.",
   },
   {
     question: "Which renderer should I pick?",

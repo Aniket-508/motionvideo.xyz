@@ -26,7 +26,7 @@ const Terms = () => (
     <PageSection title="The product in short">
       <p>
         {SITE.NAME} is a pack of agent skills: instruction files plus example
-        code. Your own coding agent (Claude Code, Codex, Cursor, Gemini CLI,
+        code. Your own coding agent (Claude Code, Codex, Cursor, Antigravity,
         Copilot, and similar tools) reads them and uses them to design and
         animate motion videos, such as showreels, intros, and launch films, from
         code and your own UI components. The videos are rendered on your
