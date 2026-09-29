@@ -5,20 +5,7 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-import { ROUTES } from "./src/constants/routes.ts";
-
-// Content pages with no per-request data: rendered to HTML at build time and
-// served as static assets, so they never run the Worker. Everything else
-// (landing offer, auth, checkout) stays server-rendered.
-const STATIC_PAGES = [
-  ROUTES.ABOUT,
-  ROUTES.BRAND,
-  ROUTES.CONTACT,
-  ROUTES.DPA,
-  ROUTES.PRIVACY,
-  ROUTES.REFUNDS,
-  ROUTES.TERMS,
-];
+import { STATIC_PAGES } from "./src/constants/routes.ts";
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
@@ -35,7 +22,7 @@ const config = defineConfig({
         autoSubfolderIndex: false,
         crawlLinks: false,
         enabled: true,
-        filter: ({ path }) => STATIC_PAGES.some((page) => page === path),
+        filter: ({ path }) => STATIC_PAGES.includes(path),
       },
     }),
     viteReact(),

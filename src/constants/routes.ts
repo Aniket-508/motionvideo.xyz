@@ -16,3 +16,16 @@ export const ROUTES = {
   TERMS: "/terms",
   WELCOME: "/welcome",
 } as const;
+
+// Content pages with no per-request data: rendered to HTML at build time
+// (vite.config.ts) and served by the Worker from static assets (src/server.ts).
+// Keep in sync with `assets.run_worker_first` in wrangler.jsonc.
+export const STATIC_PAGES: readonly string[] = [
+  ROUTES.ABOUT,
+  ROUTES.BRAND,
+  ROUTES.CONTACT,
+  ROUTES.DPA,
+  ROUTES.PRIVACY,
+  ROUTES.REFUNDS,
+  ROUTES.TERMS,
+];

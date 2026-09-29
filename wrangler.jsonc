@@ -7,6 +7,21 @@
   "observability": {
     "enabled": true,
   },
+  // Prerendered content pages (STATIC_PAGES in src/constants/routes.ts) run the
+  // Worker first so it can apply the www redirect, then it serves the static
+  // HTML through ASSETS. Scripts, styles, and images skip the Worker.
+  "assets": {
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/about",
+      "/brand",
+      "/contact",
+      "/dpa",
+      "/privacy",
+      "/refunds",
+      "/terms",
+    ],
+  },
   // Served only on the custom domains; auth is bound to BETTER_AUTH_URL.
   "workers_dev": false,
   "preview_urls": false,

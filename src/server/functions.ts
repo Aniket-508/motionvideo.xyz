@@ -72,8 +72,8 @@ export const sendContactMessage = createServerFn({ method: "POST" })
     }
     await sendEmail({
       replyTo: data.email,
-      subject: `${SITE.NAME} contact: ${data.name}`,
-      text: `From: ${data.name} <${data.email}>\n\n${data.message}`,
+      subject: `${SITE.NAME} [${data.inquiry}]: ${data.subject}`,
+      text: `From: ${data.name} <${data.email}>\nInquiry: ${data.inquiry}\n\n${data.message}`,
       to: LINK.EMAIL,
     });
     return { ok: true };
