@@ -1,3 +1,4 @@
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
@@ -33,7 +34,19 @@ const RootDocument = ({ children }: { children: React.ReactNode }) => (
 
 export const Route = createRootRoute({
   head: () => ({
-    links: [{ href: appCss, rel: "stylesheet" }, ...baseMetadata.links],
+    links: [
+      { href: appCss, rel: "stylesheet" },
+      // Fetch the font alongside the CSS instead of after it, so first paint
+      // already uses Inter.
+      {
+        as: "font",
+        crossOrigin: "anonymous",
+        href: interLatin,
+        rel: "preload",
+        type: "font/woff2",
+      },
+      ...baseMetadata.links,
+    ],
     meta: baseMetadata.meta,
     scripts: [{ children: themeScript }, websiteJsonLd(), organizationJsonLd()],
   }),
