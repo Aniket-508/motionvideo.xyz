@@ -12,7 +12,8 @@ import { sendEmail } from "./email";
 import {
   completedCheckout,
   customerPortalUrl,
-  hasPurchased,
+  offerFor,
+  purchaseStatus,
 } from "./polar";
 
 const currentSession = () => {
@@ -22,8 +23,8 @@ const currentSession = () => {
 
 export const getLandingData = createServerFn({ method: "GET" }).handler(
   async () => {
-    const session = await currentSession();
-    return { signedIn: session !== null };
+    const [session, offer] = await Promise.all([currentSession(), offerFor()]);
+    return { offer, signedIn: session !== null };
   }
 );
 
@@ -33,10 +34,11 @@ export const getAccount = createServerFn({ method: "GET" }).handler(
     if (!session) {
       return null;
     }
-    return {
-      email: session.user.email,
-      purchased: await hasPurchased(session.user.email),
-    };
+    const [purchase, offer] = await Promise.all([
+      purchaseStatus(session.user.email),
+      offerFor(),
+    ]);
+    return { email: session.user.email, offer, ...purchase };
   }
 );
 

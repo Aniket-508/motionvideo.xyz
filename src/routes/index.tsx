@@ -15,6 +15,7 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import { FAQS } from "@/constants/faqs";
 import { FEATURES } from "@/constants/features";
+import { BASE_PRICE_CENTS, LAUNCH_PRICE_CENTS } from "@/constants/pricing";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { AGENTS, RENDERERS } from "@/constants/stack";
@@ -29,7 +30,7 @@ const routeApi = getRouteApi("/");
 const sectionTitle = "text-2xl font-semibold tracking-tight";
 
 const Landing = () => {
-  const { signedIn } = routeApi.useLoaderData();
+  const { signedIn, offer } = routeApi.useLoaderData();
 
   return (
     <>
@@ -64,10 +65,12 @@ const Landing = () => {
                     buttonVariants({ size: "cta", variant: "cta" })
                   )}
                 >
-                  Generate now
+                  {offer.released ? "See pricing" : "See preorder"}
                 </a>
                 <span className="text-muted-foreground text-sm">
-                  One-time purchase
+                  {offer.released
+                    ? "One-time purchase"
+                    : "Prepaid preorder · Access at launch"}
                 </span>
               </div>
             </div>
@@ -187,9 +190,11 @@ const Landing = () => {
 
           <section id="pricing" className="flex scroll-mt-8 flex-col gap-8">
             <h2 className={cn(sectionTitle, "text-center")}>
-              One price. Every update.
+              {offer.active
+                ? "Launch offer. Every update."
+                : "One price. Every update."}
             </h2>
-            <PriceCard />
+            <PriceCard offer={offer} />
           </section>
         </div>
       </main>
@@ -200,12 +205,17 @@ const Landing = () => {
 
 export const Route = createFileRoute("/")({
   component: Landing,
-  head: () => ({
+  head: ({ loaderData }) => ({
     ...createMetadata({
       canonical: ROUTES.HOME,
       description: SITE.DESCRIPTION.LONG,
     }),
-    scripts: [productJsonLd(), faqJsonLd()],
+    scripts: [
+      productJsonLd(
+        loaderData?.offer.active ? BASE_PRICE_CENTS : LAUNCH_PRICE_CENTS
+      ),
+      faqJsonLd(),
+    ],
   }),
   loader: () => getLandingData(),
 });

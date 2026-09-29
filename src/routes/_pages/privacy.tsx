@@ -40,9 +40,11 @@ const Privacy = () => (
       <PageList>
         <li>
           <strong className="text-foreground">Your email address</strong>, typed
-          in at Polar’s checkout or on our sign-in page. We check it against
-          your Polar orders and, if a paid order exists, email you a sign-in
-          link.
+          in at Polar’s checkout or on our sign-in page. Polar stores the order
+          email so we can identify the purchase and arrange delivery at launch.
+          We check it against your Polar orders and, if a paid order exists,
+          email you a sign-in link. A purchase does not subscribe you to a
+          marketing list.
         </li>
         <li>
           <strong className="text-foreground">Contact form messages</strong>:
@@ -91,10 +93,11 @@ const Privacy = () => (
           storing our own copy.
         </li>
         <li>
-          <strong className="text-foreground">GitHub username.</strong> Claiming
-          repository access sends your GitHub username to Polar, which issues
-          the invite. From then on GitHub lists you as a collaborator on our
-          private repository, so we can see your username there.
+          <strong className="text-foreground">GitHub username.</strong> After
+          launch, claiming the Polar GitHub repository access benefit with your
+          GitHub account shares your username with Polar for the repository
+          invite. GitHub then lists you as a collaborator on our private
+          repository, so we can see your username there.
         </li>
       </PageList>
     </PageSection>

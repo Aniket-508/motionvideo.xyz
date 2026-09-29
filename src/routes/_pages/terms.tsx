@@ -48,17 +48,21 @@ const Terms = () => (
         </a>
         , which acts as the merchant of record. That means Polar is the party
         that takes your payment, sends the invoice, deals with sales tax or VAT,
-        and pays out any refund, all under Polar’s own terms. The price is
-        displayed before checkout; taxes are added on top where they apply.
+        and pays out any refund, all under Polar’s own terms. Prepaid preorders
+        cost $79 until Thursday, October 1, 2026 (UTC date), or the first 100
+        paid preorders, whichever comes first. After that the price is $99. The
+        price is displayed before checkout; taxes are added where they apply.
       </p>
     </PageSection>
 
     <PageSection title="Getting your copy">
       <p>
-        The pack lives in a private GitHub repository. Your purchase comes with
-        read-only access to it, which you claim from Polar’s customer portal by
-        linking a GitHub account. Without a GitHub account you can’t receive the
-        files, so please make sure you have one.
+        The pack lives in a private GitHub repository. A preorder is paid now,
+        but the files are not delivered until the October 1, 2026 launch. After
+        launch, the Polar GitHub repository access benefit lets you claim
+        read-only access from Polar’s customer portal using a GitHub account.
+        Paying does not grant immediate access. You need a GitHub account to
+        receive the files.
       </p>
       <p>
         Future improvements are pushed to that same repository. You get them at
@@ -127,11 +131,13 @@ const Terms = () => (
 
     <PageSection title="Refunds">
       <p>
-        When you can get your money back is explained in the{" "}
+        You can request a refund of a preorder before delivery at launch by
+        emailing <SupportEmail />. Other refund situations and how to request
+        one are explained in the{" "}
         <Link to="/refunds" className={linkClass}>
           refund policy
         </Link>
-        . A refunded order loses its repository access.
+        . A refunded order loses its repository access, if already delivered.
       </p>
     </PageSection>
 

@@ -106,9 +106,9 @@ const SignInLink = ({ email }: { email: string }) => {
       <MailCheckIcon aria-hidden className="mb-2 size-6" />
       <CardTitle>Check your email</CardTitle>
       <CardDescription>
-        We sent a sign-in link to <strong>{email}</strong>. Open it to get your
-        purchase. It expires in 15 minutes, and you can always get a new one
-        from the sign-in page with the same email.
+        We sent a sign-in link to <strong>{email}</strong>. Open it to view your
+        purchase in your dashboard. It expires in 15 minutes, and you can get a
+        new one from the sign-in page with the same email.
       </CardDescription>
     </CardHeader>
   );
@@ -126,7 +126,18 @@ const Welcome = () => {
           <>
             <CardHeader>
               <PartyPopperIcon aria-hidden className="mb-2 size-6" />
-              <CardTitle>Thanks for buying {SITE.NAME}!</CardTitle>
+              <CardTitle>
+                {checkout.preorder
+                  ? `Thanks for preordering ${SITE.NAME}!`
+                  : `Thanks for buying ${SITE.NAME}!`}
+              </CardTitle>
+              {checkout.preorder && !checkout.released && (
+                <CardDescription>
+                  Your prepaid preorder is confirmed. The skill pack and GitHub
+                  access arrive at launch, not immediately after checkout. You
+                  can view your receipt in the customer portal now.
+                </CardDescription>
+              )}
             </CardHeader>
             <SignInLink email={checkout.email} />
           </>

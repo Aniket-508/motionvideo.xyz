@@ -1,6 +1,5 @@
 import { FAQS } from "@/constants/faqs";
 import { LINK } from "@/constants/links";
-import { BASE_PRICE_CENTS } from "@/constants/pricing";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { absoluteUrl } from "@/constants/url";
@@ -56,7 +55,7 @@ export const websiteJsonLd = () =>
 
 export const organizationJsonLd = () => jsonLdScript(organization);
 
-export const productJsonLd = () =>
+export const productJsonLd = (priceCents: number) =>
   jsonLdScript({
     "@type": "Product",
     brand: { "@type": "Brand", name: SITE.NAME },
@@ -66,7 +65,7 @@ export const productJsonLd = () =>
     offers: {
       "@type": "Offer",
       availability: "https://schema.org/InStock",
-      price: (BASE_PRICE_CENTS / 100).toFixed(2),
+      price: (priceCents / 100).toFixed(2),
       priceCurrency: "USD",
       url: absoluteUrl(ROUTES.PRICING),
     },

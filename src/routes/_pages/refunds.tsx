@@ -17,17 +17,25 @@ const Refunds = () => (
   <>
     <LegalPageHeader title="Refund policy" />
     <p className="text-muted-foreground leading-7">
-      {SITE.NAME} is sold as a single payment for digital files, handed over
-      through access to a private GitHub repository. Since the files can’t be
-      returned once you have them, refunds are limited to the situations below.
-      This page forms part of our{" "}
+      {SITE.NAME} is sold as a single payment for a digital pack delivered
+      through access to a private GitHub repository. A prepaid preorder costs
+      $79 until Thursday, October 1, 2026 (UTC date), or the first 100 paid
+      preorders, whichever comes first; afterward the price is $99. The preorder
+      pack is delivered at launch, not immediately. This page forms part of our{" "}
       <Link to="/terms" className={linkClass}>
         terms of service
       </Link>
       .
     </p>
 
-    <PageSection title="Situations where you get your money back">
+    <PageSection title="Before delivery">
+      <p>
+        If you preordered and the pack has not yet been delivered, email
+        <SupportEmail /> to request a refund. You do not need to give a reason.
+      </p>
+    </PageSection>
+
+    <PageSection title="Other situations where you get your money back">
       <PageList>
         <li>
           A billing mistake: you paid more than once for the same order, or a
@@ -44,17 +52,13 @@ const Refunds = () => (
       </PageList>
     </PageSection>
 
-    <PageSection title="Withdrawal rights in the EU and UK">
+    <PageSection title="After launch">
       <p>
-        If you’re a consumer in the EU or UK, the law normally lets you cancel a
-        digital purchase within 14 days. During checkout you agree to receive
-        the pack immediately and confirm you understand that this cancellation
-        right is lost once access is delivered. Changing your mind after that
-        point is not, by itself, a reason for a refund.
-      </p>
-      <p>
-        Want to keep the 14 days? Don’t claim repository access; email us within
-        the period instead.
+        After launch, claim the Polar GitHub repository access benefit using a
+        GitHub account in Polar’s customer portal. Paying for a preorder does
+        not give you immediate repository access. If you have a problem after
+        delivery, contact us; we will help resolve it under this policy and any
+        rights that apply where you live.
       </p>
     </PageSection>
 
@@ -69,8 +73,8 @@ const Refunds = () => (
     <PageSection title="Once a refund is approved">
       <p>
         Polar, as merchant of record, sends the full amount back to the card or
-        payment method you used. At the same time, your access to the repository
-        is removed.
+        payment method you used. If repository access has already been
+        delivered, it is removed.
       </p>
     </PageSection>
 

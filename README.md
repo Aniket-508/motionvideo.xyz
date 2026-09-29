@@ -18,13 +18,13 @@ Agent skills that teach your coding agent motion design: timing, easing, and cho
 
 ---
 
-This repository is the marketing and checkout site for MotionVideo. The site is open source; the skill pack itself is sold separately and delivered as access to a private GitHub repository through [Polar](https://polar.sh).
+This repository is the marketing and checkout site for MotionVideo. The site is open source; the skill pack itself is sold separately and delivered at launch as access to a private GitHub repository through [Polar](https://polar.sh).
 
 ## How it works
 
 - **Checkout**: buy buttons go straight to a Polar checkout, no account needed. After paying, `/welcome` emails the buyer a sign-in link.
-- **Access**: passwordless magic links, only for emails with a paid order. The dashboard links to the Polar customer portal, where buyers claim the GitHub repository invite.
-- **Pricing**: one $79 price for every buyer; individual discounts can be issued separately through Polar.
+- **Access**: passwordless magic links are available to emails with a paid order. Preorder buyers do not receive repository access immediately. On the October 1, 2026 launch, `pnpm polar:launch --confirm-launch` attaches the GitHub benefit to the preorder product, grants it to existing buyers, and emails them instructions. Each buyer links a GitHub account in Polar's customer portal to claim the invite.
+- **Pricing**: prepaid preorders are $79 until Thursday, October 1, 2026 (UTC date), or the first 100 paid preorders, whichever comes first; afterward the price is $99. The original paid product remains intact; the preorder uses a separate Polar product and a real Polar discount, not a simulated sales counter. No localized or purchasing-power pricing.
 - **Content**: landing page, about, brand assets, contact form, and legal pages (terms, privacy, refunds, DPA), with Open Graph tags and JSON-LD on every page.
 
 ## Tech stack

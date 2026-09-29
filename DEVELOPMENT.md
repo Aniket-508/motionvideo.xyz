@@ -31,19 +31,15 @@ Local values live in `.env` (gitignored); `.env.example` lists every key.
 | `POLAR_SERVER` | `sandbox` or `production` |
 | `POLAR_ACCESS_TOKEN` | Polar organization access token |
 | `POLAR_WEBHOOK_SECRET` | Signing secret of the `/api/webhook/polar` endpoint |
-| `POLAR_PRODUCT_ID` | Written by `pnpm polar:setup` |
+| `POLAR_PRODUCT_ID` | New preorder product, $99 list price; set by `pnpm polar:setup` |
+| `POLAR_LEGACY_PRODUCT_ID` | Previous product with existing buyer(s) and GitHub benefit |
+| `POLAR_LAUNCH_DISCOUNT_ID` | $20 fixed discount, limited to 100 uses and ending October 2, 2026 at 00:00 UTC |
 
 `worker-configuration.d.ts` (the `Env` types) is generated from `wrangler.jsonc` and `.env` and is not committed. `pnpm typecheck` regenerates it; run `pnpm cf-typegen` on its own after changing bindings or env keys.
 
 ### Polar
 
-Use a [Polar sandbox](https://sandbox.polar.sh) organization for local testing (`POLAR_SERVER=sandbox`). With `POLAR_ACCESS_TOKEN` set, run:
-
-```bash
-pnpm polar:setup
-```
-
-It creates (or reuses) the product and writes `POLAR_PRODUCT_ID` into `.env`. It is safe to re-run.
+Use a [Polar sandbox](https://sandbox.polar.sh) organization for local testing. Production has an existing paid buyer, so **do not delete the old product or its GitHub benefit**. The old product is archived to prevent further $79 purchases, but its paid buyer retains access. `pnpm polar:setup` creates/reuses a separate $99 product without benefits and a product-scoped $20 discount limited to 100 redemptions until October 2, 2026 at 00:00 UTC, then writes the new product ID, old product ID and discount ID into `.env`. Re-running setup reuses these records. Set all three IDs as Worker secrets before deploying; use `wrangler deploy --config dist/server/wrangler.json --secrets-file <temporary JSON>` to upload the three together with code when cutting over from the old product. The checkout and displayed count read Polar's discount status.
 
 ## How the purchase flow works
 
@@ -51,8 +47,8 @@ It creates (or reuses) the product and writes `POLAR_PRODUCT_ID` into `.env`. It
 - **After payment**: Polar redirects to `/welcome?checkout_id=…`, which emails a sign-in link to the address on the checkout (retrying briefly while Polar confirms the order).
 - **Sign in**: Better Auth magic links, sent only to emails with a paid Polar order (gate in `src/server/auth.ts`), rate limited to 3 per minute per IP in D1.
 - **Purchase status**: read from Polar by email (customers, then orders). The app stores no order data.
-- **Delivery**: a Polar GitHub Repository Access benefit on the product invites buyers to the private skill repository; the dashboard links to the Polar customer portal.
-- **Pricing**: the $79 price is defined in `src/constants/pricing.ts` and used for the site, structured data, and new Polar products. Individual discounts can be created separately in Polar.
+- **Delivery**: the new product has no GitHub benefit until launch, so prepaid buyers cannot claim the unfinished pack. After uploading the finished files on Thursday, run `pnpm polar:launch --confirm-launch`; it ends the discount, attaches the existing GitHub benefit to the new product (Polar grants it retroactively to its existing paid customers), updates product copy, and emails paid buyers instructions. Buyers must link a GitHub account in Polar's customer portal to receive the collaborator invitation. The old product and its buyer remain untouched. Check benefit grants and the test buyer's email afterward.
+- **Pricing**: the prepaid $79 offer ends on Thursday, October 1, 2026 (UTC date), or when 100 paid preorders have been sold, whichever occurs first; afterward the $99 list price applies. Polar's real discount redemptions supply the counter and enforce the cap. No purchasing-power or localized pricing.
 - **Webhooks**: `POST /api/webhook/polar` verifies Polar's signature; the `order.paid` and `customer.state_changed` handlers are stubs.
 - **Contact form**: emails the support inbox through Resend with Reply-To set to the sender, protected by a Workers rate limit (`CONTACT_LIMITER`, 3 per minute per IP) and a honeypot field.
 
@@ -119,7 +115,7 @@ Plain `pnpm deploy` is a built-in pnpm command and does something else.
 ### Production configuration
 
 - **Vars** (`wrangler.jsonc`): `BETTER_AUTH_URL`, `EMAIL_FROM`, `POLAR_SERVER`.
-- **Secrets** (set once with `pnpm wrangler secret put <NAME>`): `BETTER_AUTH_SECRET`, `RESEND_API_KEY`, `POLAR_ACCESS_TOKEN`, `POLAR_WEBHOOK_SECRET`, `POLAR_PRODUCT_ID`.
+- **Secrets** (set once with `pnpm wrangler secret put <NAME>`): `BETTER_AUTH_SECRET`, `RESEND_API_KEY`, `POLAR_ACCESS_TOKEN`, `POLAR_WEBHOOK_SECRET`, `POLAR_PRODUCT_ID`, `POLAR_LEGACY_PRODUCT_ID`, `POLAR_LAUNCH_DISCOUNT_ID`.
 - **Bindings**: D1 database `DB`, rate limiter `CONTACT_LIMITER`.
 - **Domains**: `motionvideo.xyz` and `www.motionvideo.xyz` are custom domains in `wrangler.jsonc`; `src/server.ts` redirects `www` to the apex and `workers.dev` is disabled. Videos are served from `assets.motionvideo.xyz` (R2).
 - **Email**: Resend sends from `hello@motionvideo.xyz`; Cloudflare Email Routing forwards incoming mail for that address.
@@ -138,4 +134,5 @@ Plain `pnpm deploy` is a built-in pnpm command and does something else.
 | `pnpm auth:schema` | Regenerate the Drizzle schema from the Better Auth config |
 | `pnpm db:generate` | Generate a SQL migration from schema changes |
 | `pnpm db:migrate:local` / `pnpm db:migrate:remote` | Apply migrations to local / production D1 |
-| `pnpm polar:setup` | Create or reuse the Polar product |
+| `pnpm polar:setup` | Create or reuse the new $99 Polar product and $20 preorder discount; retain legacy buyers |
+| `pnpm polar:launch --confirm-launch` | After uploading finished files, end discount, grant GitHub benefit to all new-product buyers, and notify them |

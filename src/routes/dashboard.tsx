@@ -45,9 +45,19 @@ const PurchaseCard = () => {
           <CircleCheckIcon aria-hidden className="text-primary mb-2 size-6" />
           <CardTitle>You own {SITE.NAME}</CardTitle>
           <CardDescription>
-            Open the customer portal to connect your GitHub account and get
-            access to the private skill pack repository. Receipts and invoices
-            live there too.
+            {account.preorder && !account.offer.released ? (
+              <>
+                Your prepaid preorder is confirmed. The skill pack and GitHub
+                access arrive at launch, not immediately after checkout. The
+                customer portal has your receipts and invoices now.
+              </>
+            ) : (
+              <>
+                Open the customer portal to connect your GitHub account and get
+                access to the private skill pack repository. Receipts and
+                invoices live there too.
+              </>
+            )}
           </CardDescription>
         </CardHeader>
         <CardFooter>
@@ -64,12 +74,13 @@ const PurchaseCard = () => {
       <CardHeader>
         <CardTitle>Get {SITE.NAME}</CardTitle>
         <CardDescription>
-          One-time purchase. You’ll get access to the private skill pack
-          repository and every future update.
+          {account.offer.released
+            ? "One-time purchase. You’ll get access to the private skill pack repository and every future update."
+            : "Prepaid preorder. The skill pack and GitHub access arrive at launch, not immediately after checkout. Every future update is included."}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <BuyButton />
+        <BuyButton offer={account.offer} />
       </CardContent>
     </Card>
   );
