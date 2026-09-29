@@ -65,12 +65,12 @@ const Landing = () => {
                     buttonVariants({ size: "cta", variant: "cta" })
                   )}
                 >
-                  {offer.released ? "See pricing" : "See preorder"}
+                  {offer.released ? "See pricing" : "Preorder"}
                 </a>
                 <span className="text-muted-foreground text-sm">
                   {offer.released
                     ? "One-time purchase"
-                    : "Prepaid preorder · Access at launch"}
+                    : "Access at launch"}
                 </span>
               </div>
             </div>
@@ -191,7 +191,7 @@ const Landing = () => {
           <section id="pricing" className="flex scroll-mt-8 flex-col gap-8">
             <h2 className={cn(sectionTitle, "text-center")}>
               {offer.active
-                ? "Launch offer. Every update."
+                ? "Preorder price. Every update."
                 : "One price. Every update."}
             </h2>
             <PriceCard offer={offer} />
@@ -212,7 +212,8 @@ export const Route = createFileRoute("/")({
     }),
     scripts: [
       productJsonLd(
-        loaderData?.offer.active ? BASE_PRICE_CENTS : LAUNCH_PRICE_CENTS
+        loaderData?.offer.active ? BASE_PRICE_CENTS : LAUNCH_PRICE_CENTS,
+        loaderData?.offer.released ?? false
       ),
       faqJsonLd(),
     ],

@@ -47,6 +47,7 @@ Use a [Polar sandbox](https://sandbox.polar.sh) organization for local testing. 
 - **After payment**: Polar redirects to `/welcome?checkout_id=…`, which emails a sign-in link to the address on the checkout (retrying briefly while Polar confirms the order).
 - **Sign in**: Better Auth magic links, sent only to emails with a paid Polar order (gate in `src/server/auth.ts`), rate limited to 3 per minute per IP in D1.
 - **Purchase status**: read from Polar by email (customers, then orders). The app stores no order data.
+- **Local UI preview**: with `pnpm dev`, open `/welcome?preview=sent` to see the preorder confirmation without sending an email, or `/dashboard?preview=purchased` to see the prepaid buyer state without signing in. Preview data exists only behind `import.meta.env.DEV` in those route loaders; production requests always use the real checkout, session, and Polar purchase checks. The portal button is disabled in the dashboard preview.
 - **Delivery**: the new product has no GitHub benefit until launch, so prepaid buyers cannot claim the unfinished pack. After uploading the finished files on Thursday, run `pnpm polar:launch --confirm-launch`; it ends the discount, attaches the existing GitHub benefit to the new product (Polar grants it retroactively to its existing paid customers), updates product copy, and emails paid buyers instructions. Buyers must link a GitHub account in Polar's customer portal to receive the collaborator invitation. The old product and its buyer remain untouched. Check benefit grants and the test buyer's email afterward.
 - **Pricing**: the prepaid $79 offer ends on Thursday, October 1, 2026 (UTC date), or when 100 paid preorders have been sold, whichever occurs first; afterward the $99 list price applies. Polar's real discount redemptions supply the counter and enforce the cap. No purchasing-power or localized pricing.
 - **Webhooks**: `POST /api/webhook/polar` verifies Polar's signature; the `order.paid` and `customer.state_changed` handlers are stubs.
@@ -77,6 +78,8 @@ public/              Static files: favicons, logos, brand assets, og.png
 - Copy, links, and lists live in `src/constants/`.
 - The legal seller name, jurisdiction, and "last updated" date live in `SITE.LEGAL` (`src/constants/site.ts`).
 - Agent and renderer logos live in `public/logos` and are listed in `src/constants/stack.ts`. Single-color black logos need `mono: true` so they turn white in dark mode.
+- The animated feature illustrations live in `src/components/feature-art.tsx`, with keyframes in `src/styles.css`. The motion-token dot follows the same `motionCurve` as the dashed stroke via CSS `offset-path`; keep `transform-box-fill` and `offset-anchor: center` so its center stays on the curve. The scene-starter strip repeats its two-card pattern beyond the 160-unit viewport so the `-112px` loop never leaves a blank edge. Reduced-motion visitors see static illustrations.
+- The pricing card in `src/components/pricing.tsx` displays the live Polar preorder count. Its LIVE badge pings only when motion is allowed; preorder delivery timing remains explained in the hero, checkout, FAQ, and purchase flow.
 - Videos are served from the R2 bucket `motionvideo-assets` at `https://assets.motionvideo.xyz` and referenced in `src/constants/links.ts` (`ASSETS`). Upload a new file with:
 
   ```bash

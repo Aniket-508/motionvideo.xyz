@@ -9,6 +9,7 @@ import {
   BASE_PRICE_CENTS,
   LAUNCH_PRICE_CENTS,
   PREORDER_LIMIT,
+  PREORDER_PRODUCT_NAME,
 } from "../src/constants/pricing.ts";
 import { SITE } from "../src/constants/site.ts";
 
@@ -38,7 +39,7 @@ if (!githubBenefit) {
   throw new Error("Existing product needs a GitHub Repository Access benefit.");
 }
 
-const preorderName = `${SITE.NAME} — Preorder`;
+const preorderName = PREORDER_PRODUCT_NAME;
 let product =
   process.env.POLAR_LEGACY_PRODUCT_ID && process.env.POLAR_PRODUCT_ID
     ? await polar.products.get({ id: process.env.POLAR_PRODUCT_ID })
@@ -93,7 +94,7 @@ let discount = discounts.items.find(
 );
 if (!discount) {
   discount = await polar.discounts.create({
-    name: "Preorder launch offer — $20 off",
+    name: "Preorder offer",
     type: "fixed",
     amounts: { usd: LAUNCH_PRICE_CENTS - BASE_PRICE_CENTS },
     duration: "once",
@@ -117,7 +118,7 @@ if (
   (!discount.endsAt || discount.endsAt.getTime() > Date.now())
 ) {
   throw new Error(
-    "Preorder product has benefits before the launch offer ended."
+    "Preorder product has benefits before the preorder offer ended."
   );
 }
 

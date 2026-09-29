@@ -1,6 +1,8 @@
 export const BASE_PRICE_CENTS = 7900;
 export const LAUNCH_PRICE_CENTS = 9900;
 export const PREORDER_LIMIT = 100;
+export const PRODUCT_NAME = "MotionVideo Skill Bundle";
+export const PREORDER_PRODUCT_NAME = `Preorder — ${PRODUCT_NAME}`;
 
 export interface Offer {
   active: boolean;
