@@ -32,8 +32,6 @@ Local values live in `.env` (gitignored); `.env.example` lists every key.
 | `POLAR_ACCESS_TOKEN` | Polar organization access token |
 | `POLAR_WEBHOOK_SECRET` | Signing secret of the `/api/webhook/polar` endpoint |
 | `POLAR_PRODUCT_ID` | Written by `pnpm polar:setup` |
-| `POLAR_PPP_DISCOUNTS` | JSON map of discount percent to Polar discount id, written by `pnpm polar:setup` |
-| `DEV_COUNTRY` | Development only: pretend requests come from this country (e.g. `IN`) to preview PPP pricing |
 
 `worker-configuration.d.ts` (the `Env` types) is generated from `wrangler.jsonc` and `.env` and is not committed. `pnpm typecheck` regenerates it; run `pnpm cf-typegen` on its own after changing bindings or env keys.
 
@@ -45,7 +43,7 @@ Use a [Polar sandbox](https://sandbox.polar.sh) organization for local testing (
 pnpm polar:setup
 ```
 
-It creates (or reuses) the product and one code-less discount per PPP tier, then writes `POLAR_PRODUCT_ID` and `POLAR_PPP_DISCOUNTS` into `.env`. It is safe to re-run.
+It creates (or reuses) the product and writes `POLAR_PRODUCT_ID` into `.env`. It is safe to re-run.
 
 ## How the purchase flow works
 
@@ -54,7 +52,7 @@ It creates (or reuses) the product and one code-less discount per PPP tier, then
 - **Sign in**: Better Auth magic links, sent only to emails with a paid Polar order (gate in `src/server/auth.ts`), rate limited to 3 per minute per IP in D1.
 - **Purchase status**: read from Polar by email (customers, then orders). The app stores no order data.
 - **Delivery**: a Polar GitHub Repository Access benefit on the product invites buyers to the private skill repository; the dashboard links to the Polar customer portal.
-- **PPP pricing**: `src/lib/ppp.ts` maps countries (from `request.cf.country`) to discount tiers. A tier only applies when its Polar discount exists, so the displayed price always matches the charged price.
+- **Pricing**: the $79 price is defined in `src/constants/pricing.ts` and used for the site, structured data, and new Polar products. Individual discounts can be created separately in Polar.
 - **Webhooks**: `POST /api/webhook/polar` verifies Polar's signature; the `order.paid` and `customer.state_changed` handlers are stubs.
 - **Contact form**: emails the support inbox through Resend with Reply-To set to the sender, protected by a Workers rate limit (`CONTACT_LIMITER`, 3 per minute per IP) and a honeypot field.
 
@@ -71,7 +69,7 @@ src/
   constants/         Site copy, links, routes, FAQs, features, videos, …
   seo/               createMetadata(), baseMetadata, and JSON-LD helpers
   server/            Server-only code: auth, Polar, email, server functions
-  lib/               Shared helpers (PPP pricing, theme, UTM links)
+  lib/               Shared helpers (theme, UTM links)
   server.ts          Worker entry (www → apex redirect)
 drizzle/             SQL migrations for D1
 scripts/             Polar setup and Better Auth schema generation
@@ -121,7 +119,7 @@ Plain `pnpm deploy` is a built-in pnpm command and does something else.
 ### Production configuration
 
 - **Vars** (`wrangler.jsonc`): `BETTER_AUTH_URL`, `EMAIL_FROM`, `POLAR_SERVER`.
-- **Secrets** (set once with `pnpm wrangler secret put <NAME>`): `BETTER_AUTH_SECRET`, `RESEND_API_KEY`, `POLAR_ACCESS_TOKEN`, `POLAR_WEBHOOK_SECRET`, `POLAR_PRODUCT_ID`, `POLAR_PPP_DISCOUNTS`.
+- **Secrets** (set once with `pnpm wrangler secret put <NAME>`): `BETTER_AUTH_SECRET`, `RESEND_API_KEY`, `POLAR_ACCESS_TOKEN`, `POLAR_WEBHOOK_SECRET`, `POLAR_PRODUCT_ID`.
 - **Bindings**: D1 database `DB`, rate limiter `CONTACT_LIMITER`.
 - **Domains**: `motionvideo.xyz` and `www.motionvideo.xyz` are custom domains in `wrangler.jsonc`; `src/server.ts` redirects `www` to the apex and `workers.dev` is disabled. Videos are served from `assets.motionvideo.xyz` (R2).
 - **Email**: Resend sends from `hello@motionvideo.xyz`; Cloudflare Email Routing forwards incoming mail for that address.
@@ -140,4 +138,4 @@ Plain `pnpm deploy` is a built-in pnpm command and does something else.
 | `pnpm auth:schema` | Regenerate the Drizzle schema from the Better Auth config |
 | `pnpm db:generate` | Generate a SQL migration from schema changes |
 | `pnpm db:migrate:local` / `pnpm db:migrate:remote` | Apply migrations to local / production D1 |
-| `pnpm polar:setup` | Create or reuse the Polar product and PPP discounts |
+| `pnpm polar:setup` | Create or reuse the Polar product |

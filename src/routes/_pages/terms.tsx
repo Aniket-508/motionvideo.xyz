@@ -49,9 +49,7 @@ const Terms = () => (
         , which acts as the merchant of record. That means Polar is the party
         that takes your payment, sends the invoice, deals with sales tax or VAT,
         and pays out any refund, all under Polar’s own terms. The price is
-        displayed before checkout. It may differ from country to country because
-        we adjust it for local purchasing power; taxes are added on top where
-        they apply.
+        displayed before checkout; taxes are added on top where they apply.
       </p>
     </PageSection>
 

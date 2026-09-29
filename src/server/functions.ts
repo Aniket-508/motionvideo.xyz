@@ -13,7 +13,6 @@ import {
   completedCheckout,
   customerPortalUrl,
   hasPurchased,
-  pricingFor,
 } from "./polar";
 
 const currentSession = () => {
@@ -24,7 +23,7 @@ const currentSession = () => {
 export const getLandingData = createServerFn({ method: "GET" }).handler(
   async () => {
     const session = await currentSession();
-    return { pricing: pricingFor(getRequest()), signedIn: session !== null };
+    return { signedIn: session !== null };
   }
 );
 
@@ -37,7 +36,6 @@ export const getAccount = createServerFn({ method: "GET" }).handler(
     return {
       email: session.user.email,
       purchased: await hasPurchased(session.user.email),
-      pricing: pricingFor(getRequest()),
     };
   }
 );

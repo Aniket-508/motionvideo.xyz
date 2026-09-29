@@ -1,13 +1,13 @@
-// Creates (or reuses) the Polar product and one PPP discount per tier, then
-// writes POLAR_PRODUCT_ID and POLAR_PPP_DISCOUNTS into .env. Safe to re-run.
+// Creates (or reuses) the Polar product and writes POLAR_PRODUCT_ID into .env.
+// Safe to re-run.
 //
 //   pnpm polar:setup    # uses POLAR_ACCESS_TOKEN / POLAR_SERVER from .env
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 import { Polar } from "@polar-sh/sdk";
 
+import { BASE_PRICE_CENTS } from "../src/constants/pricing.ts";
 import { SITE } from "../src/constants/site.ts";
-import { BASE_PRICE_CENTS, PPP_TIERS } from "../src/lib/ppp.ts";
 
 const ENV_FILE = ".env";
 if (existsSync(ENV_FILE)) {
@@ -55,42 +55,7 @@ if (productId) {
   }
 }
 
-const existing = new Map<number, string>();
-for await (const page of await polar.discounts.list({ limit: 100 })) {
-  for (const discount of page.result.items) {
-    const tier = Number(discount.metadata.ppp_tier);
-    const appliesToProduct = discount.products.some((p) => p.id === productId);
-    if (tier && appliesToProduct) {
-      existing.set(tier, discount.id);
-    }
-  }
-}
-
-const tierDiscounts = await Promise.all(
-  PPP_TIERS.map(async (tier) => {
-    const found = existing.get(tier);
-    if (found) {
-      return [tier, found] as const;
-    }
-    // No `code`: the discount can only be attached server-side at checkout.
-    const discount = await polar.discounts.create({
-      basisPoints: tier * 100,
-      duration: "once",
-      metadata: { ppp_tier: tier },
-      name: `PPP ${tier}%`,
-      products: [productId],
-      type: "percentage",
-    });
-    console.log(`Created discount PPP ${tier}% (${discount.id})`);
-    return [tier, discount.id] as const;
-  })
-);
-const discountIds = Object.fromEntries(tierDiscounts);
-
-const values = {
-  POLAR_PRODUCT_ID: productId,
-  POLAR_PPP_DISCOUNTS: JSON.stringify(discountIds),
-};
+const values = { POLAR_PRODUCT_ID: productId };
 if (existsSync(ENV_FILE)) {
   let env = readFileSync(ENV_FILE, "utf-8");
   for (const [key, value] of Object.entries(values)) {
@@ -104,11 +69,10 @@ if (existsSync(ENV_FILE)) {
 }
 
 console.log(`
-Polar ${server} is ready. Wrote POLAR_PRODUCT_ID and POLAR_PPP_DISCOUNTS to ${ENV_FILE}.
-For the deployed Worker, set the same values as secrets:
+Polar ${server} is ready. Wrote POLAR_PRODUCT_ID to ${ENV_FILE}.
+For the deployed Worker, set the same value as a secret:
 
   pnpm wrangler secret put POLAR_PRODUCT_ID
-  pnpm wrangler secret put POLAR_PPP_DISCOUNTS
 
 Then, in the Polar dashboard, add a "GitHub Repository Access" benefit that
 points at your private skill repo and attach it to the product.

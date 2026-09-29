@@ -1,9 +1,9 @@
 import { FAQS } from "@/constants/faqs";
 import { LINK } from "@/constants/links";
+import { BASE_PRICE_CENTS } from "@/constants/pricing";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { absoluteUrl } from "@/constants/url";
-import { BASE_PRICE_CENTS } from "@/lib/ppp";
 
 // Structured data, emitted as <script type="application/ld+json"> through a
 // route's `head().scripts`.
@@ -56,8 +56,6 @@ export const websiteJsonLd = () =>
 
 export const organizationJsonLd = () => jsonLdScript(organization);
 
-// The skill pack as a product, with the list price. Country discounts are
-// applied at checkout and not reflected here.
 export const productJsonLd = () =>
   jsonLdScript({
     "@type": "Product",

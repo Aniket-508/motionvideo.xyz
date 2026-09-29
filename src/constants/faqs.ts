@@ -30,11 +30,6 @@ export const FAQS = [
       "Yes. The license is per person and covers every project you work on, including work for clients.",
   },
   {
-    question: "Why is my price different from a friend’s?",
-    answer:
-      "Prices follow local purchasing power, so buyers in some countries get a discount applied automatically at checkout.",
-  },
-  {
     question: "What if it doesn’t work for my project?",
     answer:
       "Email us first and we’ll try to fix it. If we can’t, the refund policy covers you.",

@@ -29,7 +29,7 @@ const routeApi = getRouteApi("/");
 const sectionTitle = "text-2xl font-semibold tracking-tight";
 
 const Landing = () => {
-  const { pricing, signedIn } = routeApi.useLoaderData();
+  const { signedIn } = routeApi.useLoaderData();
 
   return (
     <>
@@ -189,7 +189,7 @@ const Landing = () => {
             <h2 className={cn(sectionTitle, "text-center")}>
               One price. Every update.
             </h2>
-            <PriceCard pricing={pricing} />
+            <PriceCard />
           </section>
         </div>
       </main>

@@ -24,7 +24,7 @@ This repository is the marketing and checkout site for MotionVideo. The site is 
 
 - **Checkout**: buy buttons go straight to a Polar checkout, no account needed. After paying, `/welcome` emails the buyer a sign-in link.
 - **Access**: passwordless magic links, only for emails with a paid order. The dashboard links to the Polar customer portal, where buyers claim the GitHub repository invite.
-- **Pricing**: purchasing-power pricing by country (20–60% off), applied as a Polar discount at checkout so the price shown is the price charged.
+- **Pricing**: one $79 price for every buyer; individual discounts can be issued separately through Polar.
 - **Content**: landing page, about, brand assets, contact form, and legal pages (terms, privacy, refunds, DPA), with Open Graph tags and JSON-LD on every page.
 
 ## Tech stack

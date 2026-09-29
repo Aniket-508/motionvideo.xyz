@@ -7,7 +7,7 @@ import {
 import { CircleCheckIcon } from "lucide-react";
 import { useState } from "react";
 
-import { BuyButton, PppNotice } from "@/components/pricing";
+import { BuyButton } from "@/components/pricing";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { Button } from "@/components/ui/button";
 import {
@@ -69,10 +69,7 @@ const PurchaseCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-5">
-          <PppNotice pricing={account.pricing} />
-          <BuyButton pricing={account.pricing} />
-        </div>
+        <BuyButton />
       </CardContent>
     </Card>
   );

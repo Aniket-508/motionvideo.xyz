@@ -76,10 +76,8 @@ const Privacy = () => (
           a per-IP count of requests for one minute so forms can’t be flooded.
         </li>
         <li>
-          <strong className="text-foreground">Country and IP address.</strong>{" "}
-          Cloudflare tells us which country each visit comes from, and we use
-          that to pick a price adjusted for purchasing power. When you start a
-          checkout we pass your country and IP address to Polar.
+          <strong className="text-foreground">IP address.</strong> When you
+          start a checkout we pass your IP address to Polar.
         </li>
       </PageList>
     </PageSection>
