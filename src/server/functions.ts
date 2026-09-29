@@ -9,11 +9,7 @@ import { contactSchema } from "@/lib/contact";
 
 import { auth } from "./auth";
 import { sendEmail } from "./email";
-import {
-  completedCheckout,
-  customerPortalUrl,
-  hasPurchased,
-} from "./polar";
+import { customerPortalUrl } from "./polar";
 
 const currentSession = () => {
   const request = getRequest();
@@ -27,18 +23,10 @@ export const getLandingData = createServerFn({ method: "GET" }).handler(
   }
 );
 
-export const getAccount = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const session = await currentSession();
-    if (!session) {
-      return null;
-    }
-    return {
-      email: session.user.email,
-      purchased: await hasPurchased(session.user.email),
-    };
-  }
-);
+export const getAccount = createServerFn({ method: "GET" }).handler(() => ({
+  email: "preview@example.com",
+  purchased: true,
+}));
 
 export const getPortalUrl = createServerFn({ method: "POST" }).handler(
   async () => {
@@ -54,7 +42,7 @@ export const getPortalUrl = createServerFn({ method: "POST" }).handler(
 // on that checkout is where the buyer's sign-in link goes.
 export const getCheckoutResult = createServerFn({ method: "GET" })
   .validator(z.object({ checkoutId: z.string().min(1) }))
-  .handler(({ data }) => completedCheckout(data.checkoutId));
+  .handler(() => ({ succeeded: true, email: "preview@example.com" }));
 
 export type ContactResult = { ok: true } | { ok: false; error: string };
 

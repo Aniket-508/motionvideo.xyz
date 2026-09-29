@@ -14,10 +14,17 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { SITE } from "@/constants/site";
 import { authClient } from "@/lib/auth-client";
 import { createMetadata } from "@/seo/metadata";
@@ -40,22 +47,24 @@ const PurchaseCard = () => {
 
   if (account.purchased) {
     return (
-      <Card size="lg">
-        <CardHeader>
-          <CircleCheckIcon aria-hidden className="text-primary mb-2 size-6" />
-          <CardTitle>You own {SITE.NAME}</CardTitle>
-          <CardDescription>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia className="text-primary">
+            <CircleCheckIcon aria-hidden className="size-8" />
+          </EmptyMedia>
+          <EmptyTitle className="text-base">You own {SITE.NAME}</EmptyTitle>
+          <EmptyDescription>
             Open the customer portal to connect your GitHub account and get
             access to the private skill pack repository. Receipts and invoices
             live there too.
-          </CardDescription>
-        </CardHeader>
-        <CardFooter>
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
           <Button size="lg" onClick={openPortal} disabled={busy}>
             {busy ? "Opening…" : "Open customer portal"}
           </Button>
-        </CardFooter>
-      </Card>
+        </EmptyContent>
+      </Empty>
     );
   }
 

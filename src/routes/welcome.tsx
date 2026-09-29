@@ -4,19 +4,22 @@ import {
   redirect,
   useRouter,
 } from "@tanstack/react-router";
-import { LoaderIcon, MailCheckIcon, PartyPopperIcon } from "lucide-react";
+import { LoaderIcon, PartyPopperIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { z } from "zod";
 
+import { ConfettiSideCannons } from "@/components/confetti";
 import { Brand } from "@/components/site-chrome";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { SITE } from "@/constants/site";
 import { authClient } from "@/lib/auth-client";
 import { createMetadata } from "@/seo/metadata";
@@ -32,6 +35,18 @@ const SEND_ATTEMPTS = 4;
 const RETRY_DELAY_MS = 3000;
 
 const routeApi = getRouteApi("/welcome");
+
+const ThanksHeader = ({ children }: { children: ReactNode }) => (
+  <EmptyHeader>
+    <EmptyMedia className="text-primary">
+      <PartyPopperIcon aria-hidden className="size-8" />
+    </EmptyMedia>
+    <EmptyTitle className="text-base">
+      Thanks for buying {SITE.NAME}!
+    </EmptyTitle>
+    <EmptyDescription>{children}</EmptyDescription>
+  </EmptyHeader>
+);
 
 const SignInLink = ({ email }: { email: string }) => {
   const started = useRef(false);
@@ -72,45 +87,34 @@ const SignInLink = ({ email }: { email: string }) => {
 
   if (status === "sending") {
     return (
-      <CardHeader>
-        <LoaderIcon aria-hidden className="mb-2 size-6 animate-spin" />
-        <CardTitle>Sending your sign-in link</CardTitle>
-        <CardDescription>
-          Emailing a sign-in link to <strong>{email}</strong>.
-        </CardDescription>
-      </CardHeader>
+      <ThanksHeader>
+        Sending your sign-in link to <strong>{email}</strong>.
+      </ThanksHeader>
     );
   }
 
   if (status === "failed") {
     return (
       <>
-        <CardHeader>
-          <CardTitle>We couldn’t send the link yet</CardTitle>
-          <CardDescription>
-            Your payment went through, but it hasn’t reached us yet. Try again
-            in a moment, or sign in later with <strong>{email}</strong>.
-          </CardDescription>
-        </CardHeader>
-        <CardFooter>
+        <ThanksHeader>
+          Your payment went through, but it hasn’t reached us yet. Try again in
+          a moment, or sign in later with <strong>{email}</strong>.
+        </ThanksHeader>
+        <EmptyContent>
           <Button size="lg" onClick={send}>
             Send the link again
           </Button>
-        </CardFooter>
+        </EmptyContent>
       </>
     );
   }
 
   return (
-    <CardHeader>
-      <MailCheckIcon aria-hidden className="mb-2 size-6" />
-      <CardTitle>Check your email</CardTitle>
-      <CardDescription>
-        We sent a sign-in link to <strong>{email}</strong>. Open it to get your
-        purchase. It expires in 15 minutes, and you can always get a new one
-        from the sign-in page with the same email.
-      </CardDescription>
-    </CardHeader>
+    <ThanksHeader>
+      We sent a sign-in link to <strong>{email}</strong>. Open it to get your
+      purchase. It expires in 15 minutes, and you can always get a new one from
+      the sign-in page with the same email.
+    </ThanksHeader>
   );
 };
 
@@ -121,32 +125,33 @@ const Welcome = () => {
   return (
     <main className="flex min-h-svh flex-col items-center justify-center gap-6 p-6">
       <Brand />
-      <Card className="w-full max-w-sm">
+      <Empty className="w-full max-w-sm flex-none">
         {checkout.succeeded && checkout.email ? (
           <>
-            <CardHeader>
-              <PartyPopperIcon aria-hidden className="mb-2 size-6" />
-              <CardTitle>Thanks for buying {SITE.NAME}!</CardTitle>
-            </CardHeader>
+            <ConfettiSideCannons />
             <SignInLink email={checkout.email} />
           </>
         ) : (
           <>
-            <CardHeader>
-              <LoaderIcon aria-hidden className="mb-2 size-6 animate-spin" />
-              <CardTitle>Confirming your payment</CardTitle>
-              <CardDescription>
+            <EmptyHeader>
+              <EmptyMedia className="text-muted-foreground">
+                <LoaderIcon aria-hidden className="size-8 animate-spin" />
+              </EmptyMedia>
+              <EmptyTitle className="text-base">
+                Confirming your payment
+              </EmptyTitle>
+              <EmptyDescription>
                 This usually takes a few seconds.
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button variant="outline" onClick={() => router.invalidate()}>
                 Check again
               </Button>
-            </CardFooter>
+            </EmptyContent>
           </>
         )}
-      </Card>
+      </Empty>
     </main>
   );
 };
