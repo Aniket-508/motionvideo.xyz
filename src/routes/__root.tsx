@@ -3,6 +3,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
+import { NotFound } from "@/components/not-found";
 import { themeScript } from "@/lib/theme";
 import { organizationJsonLd, websiteJsonLd } from "@/seo/json-ld";
 import { baseMetadata } from "@/seo/metadata";
@@ -50,11 +51,6 @@ export const Route = createRootRoute({
     meta: baseMetadata.meta,
     scripts: [{ children: themeScript }, websiteJsonLd(), organizationJsonLd()],
   }),
-  notFoundComponent: () => (
-    <main className="container mx-auto p-4 pt-16">
-      <h1>404</h1>
-      <p>The requested page could not be found.</p>
-    </main>
-  ),
+  notFoundComponent: NotFound,
   shellComponent: RootDocument,
 });
