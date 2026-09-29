@@ -7,7 +7,6 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   BASE_PRICE_CENTS,
@@ -17,7 +16,6 @@ import {
   PREORDER_LIMIT,
 } from "@/constants/pricing";
 import type { Offer } from "@/constants/pricing";
-import { SITE } from "@/constants/site";
 
 const preorderTicks = Array.from(
   { length: PREORDER_LIMIT },
@@ -46,18 +44,17 @@ export const PriceCard = ({ offer }: { offer: Offer }) => (
         {offer.active && (
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="text-xs font-semibold tracking-widest uppercase">
-              Launch offer
+              Preorder offer
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-2.5 py-1 text-xs font-semibold text-green-700 dark:text-green-400">
-              <span
-                aria-hidden
-                className="size-1.5 rounded-full bg-green-600 dark:bg-green-400"
-              />
+              <span aria-hidden className="relative flex size-1.5">
+                <span className="absolute inset-0 animate-ping rounded-full bg-green-600 opacity-75 motion-reduce:animate-none dark:bg-green-400" />
+                <span className="relative size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+              </span>
               LIVE
             </span>
           </div>
         )}
-        <CardTitle>{SITE.NAME}</CardTitle>
         <p className="flex flex-wrap items-baseline gap-2">
           <span className="text-4xl font-semibold tracking-tight">
             {formatUsd(offer.active ? BASE_PRICE_CENTS : LAUNCH_PRICE_CENTS)}
@@ -120,12 +117,6 @@ export const PriceCard = ({ offer }: { offer: Offer }) => (
           </li>
         ))}
       </ul>
-      {!offer.released && (
-        <p className="text-muted-foreground text-sm">
-          This is a prepaid preorder. The skill pack and GitHub access arrive at
-          launch, not immediately after checkout.
-        </p>
-      )}
     </CardContent>
     <CardFooter className="border-t-0 bg-transparent pt-0">
       <a

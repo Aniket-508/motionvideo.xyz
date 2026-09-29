@@ -1,5 +1,6 @@
 import { FAQS } from "@/constants/faqs";
 import { LINK } from "@/constants/links";
+import { PREORDER_PRODUCT_NAME, PRODUCT_NAME } from "@/constants/pricing";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { absoluteUrl } from "@/constants/url";
@@ -55,13 +56,13 @@ export const websiteJsonLd = () =>
 
 export const organizationJsonLd = () => jsonLdScript(organization);
 
-export const productJsonLd = (priceCents: number) =>
+export const productJsonLd = (priceCents: number, released: boolean) =>
   jsonLdScript({
     "@type": "Product",
     brand: { "@type": "Brand", name: SITE.NAME },
     description: SITE.DESCRIPTION.LONG,
     image: absoluteUrl("/og.png"),
-    name: SITE.NAME,
+    name: released ? PRODUCT_NAME : PREORDER_PRODUCT_NAME,
     offers: {
       "@type": "Offer",
       availability: "https://schema.org/InStock",

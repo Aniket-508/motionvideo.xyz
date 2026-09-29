@@ -77,6 +77,8 @@ public/              Static files: favicons, logos, brand assets, og.png
 - Copy, links, and lists live in `src/constants/`.
 - The legal seller name, jurisdiction, and "last updated" date live in `SITE.LEGAL` (`src/constants/site.ts`).
 - Agent and renderer logos live in `public/logos` and are listed in `src/constants/stack.ts`. Single-color black logos need `mono: true` so they turn white in dark mode.
+- The animated feature illustrations live in `src/components/feature-art.tsx`, with keyframes in `src/styles.css`. The motion-token dot follows the same `motionCurve` as the dashed stroke via CSS `offset-path`; keep `transform-box-fill` and `offset-anchor: center` so its center stays on the curve. The scene-starter strip repeats its two-card pattern beyond the 160-unit viewport so the `-112px` loop never leaves a blank edge. Reduced-motion visitors see static illustrations.
+- The pricing card in `src/components/pricing.tsx` displays the live Polar preorder count. Its LIVE badge pings only when motion is allowed; preorder delivery timing remains explained in the hero, checkout, FAQ, and purchase flow.
 - Videos are served from the R2 bucket `motionvideo-assets` at `https://assets.motionvideo.xyz` and referenced in `src/constants/links.ts` (`ASSETS`). Upload a new file with:
 
   ```bash

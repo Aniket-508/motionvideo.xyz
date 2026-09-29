@@ -3,6 +3,7 @@
 // of the new product, and emails paid buyers instructions to claim it.
 import { Polar } from "@polar-sh/sdk";
 
+import { PRODUCT_NAME } from "../src/constants/pricing.ts";
 import { SITE } from "../src/constants/site.ts";
 
 if (process.env.POLAR_ACCESS_TOKEN === undefined) {
@@ -79,7 +80,7 @@ if (Number.isNaN(launchedAt.getTime())) {
 await polar.products.update({
   id: product.id,
   productUpdate: {
-    name: SITE.NAME,
+    name: PRODUCT_NAME,
     description: SITE.DESCRIPTION.LONG,
     metadata: {
       ...product.metadata,

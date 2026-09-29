@@ -39,7 +39,7 @@ const Skills = () => (
 const Scenes = () => (
   <svg viewBox="0 0 160 96" className="h-full w-auto" aria-hidden>
     <g className={cn("animate-mv-strip", anim)}>
-      {[0, 56, 112, 168].map((x, i) => (
+      {[0, 56, 112, 168, 224, 280].map((x, i) => (
         <g key={x}>
           <rect
             x={x}
@@ -63,20 +63,26 @@ const Scenes = () => (
   </svg>
 );
 
+const motionCurve = "M16 76 C 60 76, 70 10, 104 22 S 140 40, 144 34";
+
 const Motion = () => (
   <svg viewBox="0 0 160 96" className="h-full w-auto" aria-hidden>
     <path
-      d="M16 76 C 60 76, 70 10, 104 22 S 140 40, 144 34"
+      d={motionCurve}
       className="stroke-muted-foreground/40"
       fill="none"
       strokeWidth="2"
       strokeDasharray="4 4"
     />
     <circle
-      cx="16"
-      cy="48"
+      cx="0"
+      cy="0"
       r="8"
-      className={cn("fill-primary animate-mv-spring transform-box-fill", anim)}
+      className={cn(
+        "fill-primary animate-mv-follow-path transform-box-fill",
+        anim
+      )}
+      style={{ offsetPath: `path("${motionCurve}")`, offsetAnchor: "center" }}
     />
   </svg>
 );
