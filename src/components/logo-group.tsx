@@ -16,7 +16,10 @@ export const LogoGroup = ({
         <li
           key={logo.name}
           title={logo.name}
-          className="ring-background border-border bg-background flex size-7 items-center justify-center overflow-hidden rounded-full border ring-2"
+          className={cn(
+            "ring-background border-border bg-background flex size-7 items-center justify-center overflow-hidden rounded-full border ring-2",
+            logo.mobileHidden && "hidden sm:flex"
+          )}
         >
           <img
             src={logo.src}

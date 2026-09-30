@@ -93,7 +93,7 @@ const Renderers = () => (
       <span
         key={renderer.name}
         className={cn(
-          "animate-mv-cycle absolute inset-0 flex items-center justify-center rounded-2xl bg-white opacity-0 shadow-sm",
+          "animate-mv-cycle absolute inset-0 flex items-center justify-center rounded-2xl bg-background opacity-0 shadow-sm",
           ["mv-delay-0", "mv-delay-1500", "mv-delay-3000", "mv-delay-4500"][i],
           "motion-reduce:animate-none motion-reduce:first:opacity-100"
         )}
@@ -103,7 +103,7 @@ const Renderers = () => (
           alt=""
           width={32}
           height={32}
-          className="size-8"
+          className={cn("size-8", renderer.mono && "dark:invert")}
         />
       </span>
     ))}
