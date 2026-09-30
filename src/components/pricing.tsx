@@ -104,7 +104,7 @@ export const PriceCard = ({ offer }: { offer: Offer }) => (
             ))}
           </svg>
           <p className="text-muted-foreground text-xs leading-relaxed">
-            Ends Thursday, October 1, 2026 (UTC), or when the first{" "}
+            Ends Friday, October 2, 2026, 9:00 AM ET, or when the first{" "}
             {offer.limit} paid orders are placed, whichever comes first.
           </p>
         </div>

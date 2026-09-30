@@ -19,7 +19,7 @@ const Refunds = () => (
     <p className="text-muted-foreground leading-7">
       {SITE.NAME} is sold as a single payment for a digital pack delivered
       through access to a private GitHub repository. A prepaid preorder costs
-      $79 until Thursday, October 1, 2026 (UTC date), or the first 100 paid
+      $79 until Friday, October 2, 2026, 9:00 AM ET, or the first 100 paid
       preorders, whichever comes first; afterward the price is $99. The preorder
       pack is delivered at launch, not immediately. This page forms part of our{" "}
       <Link to="/terms" className={linkClass}>

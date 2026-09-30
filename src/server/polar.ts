@@ -84,10 +84,10 @@ const customerIdsFor = async (email: string): Promise<string[]> => {
 
 export const purchaseStatus = async (
   email: string
-): Promise<{ purchased: boolean; preorder: boolean }> => {
+): Promise<{ purchased: boolean; preorder: boolean; name: string | null }> => {
   const customerIds = await customerIdsFor(email);
   if (customerIds.length === 0) {
-    return { purchased: false, preorder: false };
+    return { name: null, preorder: false, purchased: false };
   }
   const { result } = unwrap(
     await ordersList(polar, {
@@ -102,7 +102,12 @@ export const purchaseStatus = async (
   const legacy = paid.some(
     (order) => order.productId === env.POLAR_LEGACY_PRODUCT_ID
   );
-  return { purchased: paid.length > 0, preorder: !legacy && paid.length > 0 };
+  const [order] = paid;
+  return {
+    name: order?.customer.name ?? order?.billingName ?? null,
+    preorder: !legacy && paid.length > 0,
+    purchased: paid.length > 0,
+  };
 };
 
 export const hasPurchased = async (email: string): Promise<boolean> => {

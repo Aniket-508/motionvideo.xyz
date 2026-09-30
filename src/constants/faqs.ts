@@ -22,7 +22,7 @@ export const FAQS = [
   {
     question: "How do I get the files after paying?",
     answer:
-      "Checkout needs no account. If you preorder, you pay now but receive the pack at the October 1, 2026 launch, not immediately. After launch, use a GitHub account to claim repository access in the Polar customer portal. Sign in here with the email you paid with.",
+      "Checkout needs no account. If you preorder, you pay now but receive the pack at the October 2, 2026 launch, not immediately. After launch, use a GitHub account to claim repository access in the Polar customer portal. Sign in here with the email you paid with.",
   },
   {
     question: "Can I use it for client projects?",

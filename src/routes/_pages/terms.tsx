@@ -49,7 +49,7 @@ const Terms = () => (
         , which acts as the merchant of record. That means Polar is the party
         that takes your payment, sends the invoice, deals with sales tax or VAT,
         and pays out any refund, all under Polar’s own terms. Prepaid preorders
-        cost $79 until Thursday, October 1, 2026 (UTC date), or the first 100
+        cost $79 until Friday, October 2, 2026, 9:00 AM ET, or the first 100
         paid preorders, whichever comes first. After that the price is $99. The
         price is displayed before checkout; taxes are added where they apply.
       </p>
@@ -58,7 +58,7 @@ const Terms = () => (
     <PageSection title="Getting your copy">
       <p>
         The pack lives in a private GitHub repository. A preorder is paid now,
-        but the files are not delivered until the October 1, 2026 launch. After
+        but the files are not delivered until the October 2, 2026 launch. After
         launch, the Polar GitHub repository access benefit lets you claim
         read-only access from Polar’s customer portal using a GitHub account.
         Paying does not grant immediate access. You need a GitHub account to

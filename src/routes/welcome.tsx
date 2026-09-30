@@ -81,6 +81,7 @@ const SignInLink = ({
       const { error } = await authClient.signIn.magicLink({
         callbackURL: "/dashboard",
         email,
+        metadata: { welcome: true },
       });
       if (!error) {
         setStatus("sent");

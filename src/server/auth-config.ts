@@ -9,7 +9,12 @@ import type * as schema from "./db/schema";
 export interface AuthConfig {
   baseURL: string;
   secret: string;
-  sendMagicLink: (email: string, url: string) => Promise<void>;
+  /** `welcome`: requested from /welcome right after checkout. */
+  sendMagicLink: (
+    email: string,
+    url: string,
+    options: { welcome: boolean }
+  ) => Promise<void>;
 }
 
 // Runtime-agnostic factory: no `cloudflare:workers` import, so the Better Auth
@@ -35,7 +40,10 @@ export const createAuth = (
     plugins: [
       magicLink({
         expiresIn: 60 * 15,
-        sendMagicLink: ({ email, url }) => config.sendMagicLink(email, url),
+        sendMagicLink: ({ email, url, metadata }) =>
+          config.sendMagicLink(email, url, {
+            welcome: metadata?.welcome === true,
+          }),
       }),
       // Must stay last.
       tanstackStartCookies(),

@@ -31,7 +31,7 @@ export const SITE = {
   LEGAL: {
     JURISDICTION: USER.address.country,
     OPERATOR: NAME,
-    UPDATED_AT: "September 28, 2026",
+    UPDATED_AT: "September 30, 2026",
   },
   NAME: "MotionVideo",
   TAGLINE: "Motion design, written in code.",
