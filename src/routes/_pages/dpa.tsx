@@ -69,7 +69,7 @@ const Dpa = () => (
         </li>
         <li>
           <strong className="text-foreground">Cloudflare</strong>: hosting,
-          database, DNS, and email forwarding.
+          database, DNS, email forwarding, and cookieless web analytics.
         </li>
         <li>
           <strong className="text-foreground">Resend</strong>: transactional
@@ -99,7 +99,8 @@ const Dpa = () => (
         </li>
         <li>
           We collect as little as possible: no passwords, no payment card data,
-          no analytics, and no copy of the work you create.
+          no advertising trackers, no analytics cookies, and no copy of the work
+          you create.
         </li>
       </PageList>
     </PageSection>
