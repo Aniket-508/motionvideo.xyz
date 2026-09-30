@@ -36,10 +36,26 @@ const Skills = () => (
   </svg>
 );
 
+// The filmstrip scrolls past the edge of the frame, so both ends fade out
+// with a horizontal mask instead of cutting off mid-frame. The svg fills the
+// card, which keeps the fade pinned to its left and right edges.
+const stripMask = {
+  maskImage:
+    "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+  WebkitMaskImage:
+    "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+};
+
 const Scenes = () => (
-  <svg viewBox="0 0 160 96" className="h-full w-auto" aria-hidden>
+  <svg
+    viewBox="0 0 256 96"
+    preserveAspectRatio="xMidYMid slice"
+    className="h-full w-full"
+    style={stripMask}
+    aria-hidden
+  >
     <g className={cn("animate-mv-strip", anim)}>
-      {[0, 56, 112, 168, 224, 280].map((x, i) => (
+      {[0, 56, 112, 168, 224, 280, 336].map((x, i) => (
         <g key={x}>
           <rect
             x={x}
@@ -93,7 +109,7 @@ const Renderers = () => (
       <span
         key={renderer.name}
         className={cn(
-          "animate-mv-cycle absolute inset-0 flex items-center justify-center rounded-2xl bg-background opacity-0 shadow-sm",
+          "animate-mv-cycle bg-background absolute inset-0 flex items-center justify-center rounded-2xl opacity-0 shadow-sm",
           ["mv-delay-0", "mv-delay-1500", "mv-delay-3000", "mv-delay-4500"][i],
           "motion-reduce:animate-none motion-reduce:first:opacity-100"
         )}
