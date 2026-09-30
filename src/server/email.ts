@@ -1,7 +1,5 @@
 import { env } from "cloudflare:workers";
 
-import { SITE } from "@/constants/site";
-
 interface Email {
   to: string;
   subject: string;
@@ -41,15 +39,3 @@ export const sendEmail = async (email: Email): Promise<void> => {
     throw new Error(`Resend responded ${res.status}: ${await res.text()}`);
   }
 };
-
-export const magicLinkEmail = (to: string, url: string): Email => ({
-  to,
-  subject: `Sign in to ${SITE.NAME}`,
-  text: `Sign in to ${SITE.NAME}:\n\n${url}\n\nThis link expires in 15 minutes. If you didn't request it, ignore this email.`,
-  html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:24px;color:#111">
-  <h1 style="font-size:18px;margin:0 0 16px">Sign in to ${SITE.NAME}</h1>
-  <p style="margin:0 0 24px;color:#444">Click the button below to sign in. This link expires in 15 minutes.</p>
-  <a href="${url}" style="display:inline-block;background:#111;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:500">Sign in</a>
-  <p style="margin:24px 0 0;font-size:12px;color:#888">If you didn't request this email, you can safely ignore it.</p>
-</div>`,
-});

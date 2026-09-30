@@ -1,5 +1,5 @@
-// Explicit `.ts` extensions so Node can load this file directly in
-// scripts/polar-setup.ts (type stripping, no bundler).
+// Explicit `.ts` extensions so Node can load this file directly (type
+// stripping, no bundler).
 import { SITE_ORIGIN } from "./url.ts";
 import { NAME, USER } from "./user.ts";
 

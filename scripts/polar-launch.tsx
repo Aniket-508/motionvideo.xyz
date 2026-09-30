@@ -5,6 +5,8 @@ import { Polar } from "@polar-sh/sdk";
 
 import { PRODUCT_NAME } from "../src/constants/pricing.ts";
 import { SITE } from "../src/constants/site.ts";
+import { renderEmail } from "../src/emails/_render.ts";
+import LaunchEmail, { launchSubject } from "../src/emails/launch.tsx";
 
 if (process.env.POLAR_ACCESS_TOKEN === undefined) {
   process.loadEnvFile(".env");
@@ -102,6 +104,7 @@ console.log(
 
 // Polar grants the benefit retroactively, but buyers must link their GitHub
 // identity in the customer portal to receive a repository invitation.
+const launchMessage = await renderEmail(<LaunchEmail />);
 const notified = new Set<string>();
 for await (const page of await polar.orders.list({
   productId: product.id,
@@ -133,8 +136,9 @@ for await (const page of await polar.orders.list({
       body: JSON.stringify({
         from: EMAIL_FROM,
         to: [customer.email],
-        subject: `${SITE.NAME} is ready — claim your GitHub access`,
-        text: `Your ${SITE.NAME} preorder is ready. Sign in with the email you used at checkout: ${SITE.URL}/sign-in\n\nOn your dashboard, open the Polar customer portal, link your GitHub account, and claim the private repository invitation. Your $79 preorder price is locked in. Need help? Reply to this email.`,
+        subject: launchSubject,
+        html: launchMessage.html,
+        text: launchMessage.text,
         reply_to: "hello@motionvideo.xyz",
       }),
     });

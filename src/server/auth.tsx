@@ -2,9 +2,11 @@ import { APIError } from "better-auth/api";
 import { env } from "cloudflare:workers";
 import { drizzle } from "drizzle-orm/d1";
 
+import { renderEmail } from "../emails/_render";
+import SignInEmail, { signInSubject } from "../emails/sign-in";
 import { createAuth } from "./auth-config";
 import * as schema from "./db/schema";
-import { magicLinkEmail, sendEmail } from "./email";
+import { sendEmail } from "./email";
 import { hasPurchased } from "./polar";
 
 // `env` from `cloudflare:workers` is readable at module scope; the D1 binding
@@ -21,6 +23,10 @@ export const auth = createAuth(drizzle(env.DB, { schema }), {
           "We couldn’t find a purchase for this email. Use the email you paid with.",
       });
     }
-    await sendEmail(magicLinkEmail(email, url));
+    await sendEmail({
+      subject: signInSubject,
+      to: email,
+      ...(await renderEmail(<SignInEmail url={url} />)),
+    });
   },
 });

@@ -49,6 +49,8 @@ pnpm db:migrate:local
 pnpm dev
 ```
 
+Email templates are React Email components in `src/emails`. Preview them with `pnpm email:dev` (port 3001).
+
 ## License
 
 The website source code is released under the [MIT License](LICENSE). The MotionVideo skill pack, brand name, and logomark are not covered by this license; the skill pack is sold separately under its own [terms](https://motionvideo.xyz/terms).

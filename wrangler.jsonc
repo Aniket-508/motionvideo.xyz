@@ -33,7 +33,7 @@
   // Secrets (BETTER_AUTH_SECRET, RESEND_API_KEY, POLAR_*) are set with `wrangler secret put`.
   "vars": {
     "BETTER_AUTH_URL": "https://motionvideo.xyz",
-    "EMAIL_FROM": "MotionVideo <hello@motionvideo.xyz>",
+    "EMAIL_FROM": "\"Aniket @ MotionVideo\" <hello@motionvideo.xyz>",
     "POLAR_SERVER": "production",
   },
   // Contact form: 3 messages per minute per IP.
