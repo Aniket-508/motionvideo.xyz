@@ -28,19 +28,16 @@ const Refunds = () => (
     <PageSection title="1. What you are buying">
       <p>
         {SITE.NAME} is a digital pack delivered as read-only access to a private
-        GitHub repository. There is no physical shipment and no subscription.
-        Prepaid preorders cost $79 until Friday, October 2, 2026, 9:00 AM ET, or
-        the first 100 paid preorders, whichever comes first; afterward the price
-        is $99. A preorder is delivered at the October 2, 2026 launch, not
-        immediately: after launch you claim repository access with your GitHub
-        account in Polar’s customer portal. Access includes future updates to
-        the same repository at no extra cost.
+        GitHub repository. There is no physical shipment and no subscription. It
+        costs $99, paid once. After checkout you claim repository access with
+        your GitHub account in Polar’s customer portal. Access includes future
+        updates to the same repository at no extra cost.
       </p>
     </PageSection>
 
     <PageSection title="2. Before delivery">
       <p>
-        Until you have claimed repository access, you can cancel a preorder for
+        Until you have claimed repository access, you can cancel your order for
         a full refund. Write to <SupportEmail />; you do not need to give a
         reason.
       </p>

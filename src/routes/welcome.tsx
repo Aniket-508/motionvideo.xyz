@@ -39,18 +39,16 @@ const routeApi = getRouteApi("/welcome");
 const ThanksView = ({
   children,
   icon,
-  preorder,
   action,
 }: {
   children: ReactNode;
   icon: ReactNode;
-  preorder: boolean;
   action?: ReactNode;
 }) => (
   <StatusPanel
     action={action}
     icon={icon}
-    title={`Thanks for ${preorder ? "preordering" : "buying"} ${SITE.NAME}!`}
+    title={`Thanks for buying ${SITE.NAME}!`}
   >
     {children}
   </StatusPanel>
@@ -58,11 +56,9 @@ const ThanksView = ({
 
 const SignInLink = ({
   email,
-  preorder,
   preview,
 }: {
   email: string;
-  preorder: boolean;
   preview: boolean;
 }) => {
   const started = useRef(false);
@@ -111,7 +107,6 @@ const SignInLink = ({
         icon={
           <LoaderIcon aria-hidden className="size-8 animate-spin text-black" />
         }
-        preorder={preorder}
       >
         Sending your sign-in link to <strong>{email}</strong>.
       </ThanksView>
@@ -122,7 +117,6 @@ const SignInLink = ({
     return (
       <ThanksView
         icon={<MailCheckIcon aria-hidden className="size-8 text-black" />}
-        preorder={preorder}
         action={
           <Button size="lg" onClick={send}>
             Send the link again
@@ -138,7 +132,6 @@ const SignInLink = ({
   return (
     <ThanksView
       icon={<MailCheckIcon aria-hidden className="size-8 text-black" />}
-      preorder={preorder}
     >
       <LinkSentMessage email={email} />
     </ThanksView>
@@ -165,11 +158,7 @@ const Welcome = () => {
         {checkout.succeeded && checkout.email ? (
           <>
             <ConfettiSideCannons />
-            <SignInLink
-              email={checkout.email}
-              preorder={checkout.preorder}
-              preview={preview}
-            />
+            <SignInLink email={checkout.email} preview={preview} />
           </>
         ) : (
           <StatusPanel
@@ -214,8 +203,6 @@ export const Route = createFileRoute("/welcome")({
       return {
         succeeded: true,
         email: "preview@example.com",
-        preorder: true,
-        released: false,
       };
     }
     const checkout = deps.checkoutId

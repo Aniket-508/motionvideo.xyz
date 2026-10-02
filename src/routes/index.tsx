@@ -15,7 +15,6 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import { FAQS } from "@/constants/faqs";
 import { FEATURES } from "@/constants/features";
-import { BASE_PRICE_CENTS, LAUNCH_PRICE_CENTS } from "@/constants/pricing";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { AGENTS, RENDERERS } from "@/constants/stack";
@@ -30,7 +29,7 @@ const routeApi = getRouteApi("/");
 const sectionTitle = "text-2xl font-semibold tracking-tight";
 
 const Landing = () => {
-  const { signedIn, offer } = routeApi.useLoaderData();
+  const { signedIn } = routeApi.useLoaderData();
 
   return (
     <>
@@ -65,10 +64,10 @@ const Landing = () => {
                     buttonVariants({ size: "cta", variant: "cta" })
                   )}
                 >
-                  {offer.released ? "See pricing" : "Preorder"}
+                  See pricing
                 </a>
                 <span className="text-muted-foreground text-sm">
-                  {offer.released ? "One-time purchase" : "Access at launch"}
+                  One-time purchase
                 </span>
               </div>
             </div>
@@ -190,7 +189,7 @@ const Landing = () => {
             <h2 className={cn(sectionTitle, "text-center")}>
               One price. Every update.
             </h2>
-            <PriceCard offer={offer} />
+            <PriceCard />
           </section>
         </div>
       </main>
@@ -201,18 +200,12 @@ const Landing = () => {
 
 export const Route = createFileRoute("/")({
   component: Landing,
-  head: ({ loaderData }) => ({
+  head: () => ({
     ...createMetadata({
       canonical: ROUTES.HOME,
       description: SITE.DESCRIPTION.LONG,
     }),
-    scripts: [
-      productJsonLd(
-        loaderData?.offer.active ? BASE_PRICE_CENTS : LAUNCH_PRICE_CENTS,
-        loaderData?.offer.released ?? false
-      ),
-      faqJsonLd(),
-    ],
+    scripts: [productJsonLd(), faqJsonLd()],
   }),
   loader: () => getLandingData(),
 });

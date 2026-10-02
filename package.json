@@ -17,7 +17,6 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
     "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
-    "polar:launch": "tsx scripts/polar-launch.tsx",
     "email:dev": "email dev --dir src/emails --port 3001",
     "fix": "ultracite fix",
     "prepare": "lefthook install"
@@ -64,7 +63,6 @@
     "lefthook": "^2.1.14",
     "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0",
-    "tsx": "^4.23.15",
     "typescript": "^6",
     "ultracite": "7.12.1",
     "vite": "^8",

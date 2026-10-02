@@ -23,8 +23,8 @@ This repository is the marketing and checkout site for MotionVideo. The site is 
 ## How it works
 
 - **Checkout**: buy buttons go straight to a Polar checkout, no account needed. After paying, `/welcome` emails the buyer a sign-in link.
-- **Access**: passwordless magic links are available to emails with a paid order. Preorder buyers do not receive repository access immediately. On the October 2, 2026 launch, `pnpm polar:launch --confirm-launch` attaches the GitHub benefit to the preorder product, grants it to existing buyers, and emails them instructions. Each buyer links a GitHub account in Polar's customer portal to claim the invite.
-- **Pricing**: prepaid preorders are $79 until Friday, October 2, 2026, 9:00 AM ET, or the first 100 paid preorders, whichever comes first; afterward the price is $99. The original paid product remains intact; the preorder uses a separate Polar product and a real Polar discount, not a simulated sales counter. No localized or purchasing-power pricing.
+- **Access**: passwordless magic links are available to emails with a paid order. The Polar product carries a GitHub repository access benefit; each buyer links a GitHub account in Polar's customer portal to claim the invite.
+- **Pricing**: a single $99 one-time price. An earlier $79 product is archived in Polar and kept only so its existing buyers keep their access and can sign in. No localized or purchasing-power pricing on the site.
 - **Content**: landing page, about, brand assets, contact form, and legal pages (terms, privacy, refunds, DPA), with Open Graph tags and JSON-LD on every page.
 
 ## Tech stack

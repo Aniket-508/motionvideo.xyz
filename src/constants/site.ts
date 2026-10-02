@@ -1,5 +1,3 @@
-// Explicit `.ts` extensions so Node can load this file directly (type
-// stripping, no bundler).
 import { SITE_ORIGIN } from "./url.ts";
 import { NAME, USER } from "./user.ts";
 
@@ -31,7 +29,7 @@ export const SITE = {
   LEGAL: {
     JURISDICTION: USER.address.country,
     OPERATOR: NAME,
-    UPDATED_AT: "September 30, 2026",
+    UPDATED_AT: "October 2, 2026",
   },
   NAME: "MotionVideo",
   TAGLINE: "Motion design, written in code.",

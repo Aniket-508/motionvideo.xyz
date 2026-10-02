@@ -22,7 +22,7 @@ export const FAQS = [
   {
     question: "How do I get the files after paying?",
     answer:
-      "Checkout needs no account. If you preorder, you pay now but receive the pack at the October 2, 2026 launch, not immediately. After launch, use a GitHub account to claim repository access in the Polar customer portal. Sign in here with the email you paid with.",
+      "Checkout needs no account. Right after paying, sign in with the email you paid with, open the Polar customer portal from your dashboard, and link a GitHub account to claim repository access.",
   },
   {
     question: "Can I use it for client projects?",
@@ -30,8 +30,8 @@ export const FAQS = [
       "Yes. The license is per person and covers every project you work on, including work for clients.",
   },
   {
-    question: "Can I cancel my preorder?",
+    question: "Can I get a refund?",
     answer:
-      "Yes. Email us to request a refund before the pack is delivered at launch. After delivery, see our refund policy if you have a problem with your order or access.",
+      "Yes. Email us before you claim repository access for a full refund. After that, see our refund policy if you have a problem with your order or access.",
   },
 ] as const;

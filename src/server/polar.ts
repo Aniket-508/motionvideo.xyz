@@ -3,19 +3,10 @@ import { checkoutsCreate } from "@polar-sh/sdk/funcs/checkoutsCreate.js";
 import { checkoutsGet } from "@polar-sh/sdk/funcs/checkoutsGet.js";
 import { customerSessionsCreate } from "@polar-sh/sdk/funcs/customerSessionsCreate.js";
 import { customersList } from "@polar-sh/sdk/funcs/customersList.js";
-import { discountsGet } from "@polar-sh/sdk/funcs/discountsGet.js";
 import { ordersList } from "@polar-sh/sdk/funcs/ordersList.js";
-import { productsGet } from "@polar-sh/sdk/funcs/productsGet.js";
 import { ResourceNotFound } from "@polar-sh/sdk/models/errors/resourcenotfound.js";
 import type { Result } from "@polar-sh/sdk/types/fp.js";
 import { env } from "cloudflare:workers";
-
-import {
-  BASE_PRICE_CENTS,
-  LAUNCH_PRICE_CENTS,
-  PREORDER_LIMIT,
-} from "@/constants/pricing";
-import type { Offer } from "@/constants/pricing";
 
 // Standalone functions keep the Worker bundle small (the full `Polar` class
 // pulls in every endpoint).
@@ -30,49 +21,6 @@ const unwrap = <T>(result: Result<T, Error>): T => {
   }
   return result.value;
 };
-// Polar is the source of truth for both the real redemption count and whether
-// the GitHub benefit has been released. Keep one short cache across requests.
-let offerCache: { value: Offer; expires: number } | null = null;
-
-export const offerFor = async (): Promise<Offer> => {
-  if (offerCache && offerCache.expires > Date.now()) {
-    return offerCache.value;
-  }
-  const [discount, product] = await Promise.all([
-    discountsGet(polar, { id: env.POLAR_LAUNCH_DISCOUNT_ID }),
-    productsGet(polar, { id: env.POLAR_PRODUCT_ID }),
-  ]);
-  const deal = unwrap(discount);
-  const current = unwrap(product);
-  if (
-    deal.type !== "fixed" ||
-    !("amounts" in deal) ||
-    deal.amounts.usd !== LAUNCH_PRICE_CENTS - BASE_PRICE_CENTS ||
-    deal.maxRedemptions !== PREORDER_LIMIT ||
-    !deal.products.some((item) => item.id === env.POLAR_PRODUCT_ID)
-  ) {
-    throw new Error(
-      "Polar preorder discount configuration does not match site pricing"
-    );
-  }
-  const released = current.benefits.some(
-    (benefit) => benefit.type === "github_repository"
-  );
-  const now = Date.now();
-  const value: Offer = {
-    active:
-      !released &&
-      deal.redemptionsCount < PREORDER_LIMIT &&
-      (deal.startsAt === null || deal.startsAt.getTime() <= now) &&
-      (deal.endsAt === null || deal.endsAt.getTime() > now),
-    limit: PREORDER_LIMIT,
-    released,
-    sold: deal.redemptionsCount,
-  };
-  offerCache = { expires: now + 10_000, value };
-  return value;
-};
-
 // Polar customer ids for an email. Buyers check out as guests, so the email
 // they paid with is the only link between them and their orders.
 const customerIdsFor = async (email: string): Promise<string[]> => {
@@ -84,10 +32,10 @@ const customerIdsFor = async (email: string): Promise<string[]> => {
 
 export const purchaseStatus = async (
   email: string
-): Promise<{ purchased: boolean; preorder: boolean; name: string | null }> => {
+): Promise<{ purchased: boolean; name: string | null }> => {
   const customerIds = await customerIdsFor(email);
   if (customerIds.length === 0) {
-    return { name: null, preorder: false, purchased: false };
+    return { name: null, purchased: false };
   }
   const { result } = unwrap(
     await ordersList(polar, {
@@ -99,13 +47,9 @@ export const purchaseStatus = async (
   const paid = result.items.filter(
     (order) => order.paid && order.status !== "refunded"
   );
-  const legacy = paid.some(
-    (order) => order.productId === env.POLAR_LEGACY_PRODUCT_ID
-  );
   const [order] = paid;
   return {
     name: order?.customer.name ?? order?.billingName ?? null,
-    preorder: !legacy && paid.length > 0,
     purchased: paid.length > 0,
   };
 };
@@ -120,14 +64,10 @@ export const createCheckoutUrl = async (
   products: string[],
   email: string | null
 ): Promise<string> => {
-  const offer = products.includes(env.POLAR_PRODUCT_ID)
-    ? await offerFor()
-    : null;
   const checkout = unwrap(
     await checkoutsCreate(polar, {
       customerEmail: email,
       customerIpAddress: request.headers.get("cf-connecting-ip"),
-      discountId: offer?.active ? env.POLAR_LAUNCH_DISCOUNT_ID : null,
       products,
       returnUrl: `${env.BETTER_AUTH_URL}/`,
       successUrl: `${env.BETTER_AUTH_URL}/welcome?checkout_id={CHECKOUT_ID}`,
@@ -140,8 +80,6 @@ export interface CompletedCheckout {
   /** False while Polar is still confirming the payment. */
   succeeded: boolean;
   email: string | null;
-  preorder: boolean;
-  released: boolean;
 }
 
 /** Null when Polar has no checkout with this id (bad or tampered link). */
@@ -155,12 +93,8 @@ export const completedCheckout = async (
     }
     throw result.error;
   }
-  const preorder = result.value.productId === env.POLAR_PRODUCT_ID;
-  const offer = preorder ? await offerFor() : null;
   return {
     email: result.value.customerEmail,
-    preorder,
-    released: offer?.released ?? true,
     succeeded: result.value.status === "succeeded",
   };
 };

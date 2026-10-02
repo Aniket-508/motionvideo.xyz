@@ -46,20 +46,17 @@ const Terms = () => (
         </a>{" "}
         is the merchant of record. Polar runs the checkout, charges you, issues
         your invoice, collects and remits taxes, and processes refunds under its
-        own terms. Prepaid preorders cost $79 until Friday, October 2, 2026,
-        9:00 AM ET, or the first 100 paid preorders, whichever comes first;
-        afterward the price is $99. The price is shown before you check out, and
-        taxes are added where they apply.
+        own terms. The price is $99, paid once. The price is shown before you
+        check out, and taxes are added where they apply.
       </p>
     </PageSection>
 
     <PageSection title="3. Delivery and access">
       <p>
-        The pack lives in a private GitHub repository. A preorder is paid now
-        and delivered at the October 2, 2026 launch, not immediately. After
-        launch you claim read-only access to the repository through the Polar
-        GitHub repository access benefit in Polar’s customer portal, using your
-        GitHub account. You need a GitHub account to receive the files.
+        The pack lives in a private GitHub repository. After checkout you claim
+        read-only access to the repository through the Polar GitHub repository
+        access benefit in Polar’s customer portal, using your GitHub account.
+        You need a GitHub account to receive the files.
       </p>
       <p>
         There are no passwords. Checkout works as a guest, and to come back you

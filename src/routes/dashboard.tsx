@@ -25,7 +25,6 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { PREORDER_LIMIT } from "@/constants/pricing";
 import { SITE } from "@/constants/site";
 import { authClient } from "@/lib/auth-client";
 import { createMetadata } from "@/seo/metadata";
@@ -61,9 +60,9 @@ const PurchaseCard = () => {
           </EmptyMedia>
           <EmptyTitle className="text-base">You own {SITE.NAME}</EmptyTitle>
           <EmptyDescription>
-            {account.preorder && !account.offer.released
-              ? "Your prepaid preorder is confirmed. The skill pack and GitHub access arrive at launch, not immediately after checkout. The customer portal has your receipts and invoices now."
-              : "Open the customer portal to connect your GitHub account and get access to the private skill pack repository. Receipts and invoices live there too."}
+            Open the customer portal to connect your GitHub account and get
+            access to the private skill pack repository. Receipts and invoices
+            live there too.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
@@ -80,13 +79,12 @@ const PurchaseCard = () => {
       <CardHeader>
         <CardTitle>Get {SITE.NAME}</CardTitle>
         <CardDescription>
-          {account.offer.released
-            ? "One-time purchase. You’ll get access to the private skill pack repository and every future update."
-            : "Prepaid preorder. The skill pack and GitHub access arrive at launch, not immediately after checkout. Every future update is included."}
+          One-time purchase. You’ll get access to the private skill pack
+          repository and every future update.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <BuyButton offer={account.offer} />
+        <BuyButton />
       </CardContent>
     </Card>
   );
@@ -142,13 +140,7 @@ export const Route = createFileRoute("/dashboard")({
       return {
         email: "preview@example.com",
         purchased: true,
-        preorder: true,
-        offer: {
-          active: true,
-          sold: 0,
-          limit: PREORDER_LIMIT,
-          released: false,
-        },
+        name: null,
       };
     }
     const account = await getAccount();

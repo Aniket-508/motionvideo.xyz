@@ -9,12 +9,7 @@ import { contactSchema } from "@/lib/contact";
 
 import { auth } from "./auth";
 import { sendEmail } from "./email";
-import {
-  completedCheckout,
-  customerPortalUrl,
-  offerFor,
-  purchaseStatus,
-} from "./polar";
+import { completedCheckout, customerPortalUrl, purchaseStatus } from "./polar";
 
 const currentSession = () => {
   const request = getRequest();
@@ -23,8 +18,8 @@ const currentSession = () => {
 
 export const getLandingData = createServerFn({ method: "GET" }).handler(
   async () => {
-    const [session, offer] = await Promise.all([currentSession(), offerFor()]);
-    return { offer, signedIn: session !== null };
+    const session = await currentSession();
+    return { signedIn: session !== null };
   }
 );
 
@@ -34,11 +29,8 @@ export const getAccount = createServerFn({ method: "GET" }).handler(
     if (!session) {
       return null;
     }
-    const [purchase, offer] = await Promise.all([
-      purchaseStatus(session.user.email),
-      offerFor(),
-    ]);
-    return { email: session.user.email, offer, ...purchase };
+    const purchase = await purchaseStatus(session.user.email);
+    return { email: session.user.email, ...purchase };
   }
 );
 

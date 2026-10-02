@@ -8,7 +8,7 @@ import WelcomeEmail, { welcomeSubject } from "../emails/welcome";
 import { createAuth } from "./auth-config";
 import * as schema from "./db/schema";
 import { sendEmail } from "./email";
-import { offerFor, purchaseStatus } from "./polar";
+import { purchaseStatus } from "./polar";
 
 // `env` from `cloudflare:workers` is readable at module scope; the D1 binding
 // is only queried inside requests.
@@ -28,9 +28,8 @@ export const auth = createAuth(drizzle(env.DB, { schema }), {
       });
     }
     if (welcome) {
-      const { released } = await offerFor();
       const firstName = purchase.name?.trim().split(/\s+/u)[0] || null;
-      const props = { firstName, preorder: purchase.preorder, released, url };
+      const props = { firstName, url };
       await sendEmail({
         subject: welcomeSubject(props),
         to: email,
