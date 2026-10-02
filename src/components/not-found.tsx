@@ -73,10 +73,7 @@ export const NotFound = () => (
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <Link
-          to="/"
-          className={buttonVariants({ size: "cta", variant: "cta" })}
-        >
+        <Link to="/" className={buttonVariants({ size: "lg" })}>
           Back to home
         </Link>
         <a

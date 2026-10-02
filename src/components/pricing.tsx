@@ -47,9 +47,7 @@ export const PriceCard = () => (
     <CardFooter className="border-t-0 bg-transparent pt-0">
       <a
         href="/checkout"
-        className={cn(
-          buttonVariants({ className: "w-full", size: "cta", variant: "cta" })
-        )}
+        className={cn(buttonVariants({ className: "w-full", size: "cta" }))}
       >
         {buyLabel}
       </a>

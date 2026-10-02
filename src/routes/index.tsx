@@ -60,9 +60,7 @@ const Landing = () => {
               <div className="flex flex-wrap items-center gap-4">
                 <a
                   href="#pricing"
-                  className={cn(
-                    buttonVariants({ size: "cta", variant: "cta" })
-                  )}
+                  className={cn(buttonVariants({ size: "cta" }))}
                 >
                   See pricing
                 </a>
