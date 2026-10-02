@@ -70,7 +70,7 @@ const Landing = () => {
               </div>
             </div>
           </section>
-          <DemoFrame src={VIDEOS.hero} variant="dashboard" />
+          <DemoFrame src={VIDEOS.hero} variant="dashboard" autoplay="load" />
         </div>
 
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-24 px-6">

@@ -1,12 +1,16 @@
 import { cn } from "cn";
 import { MousePointer2Icon, PlayIcon } from "lucide-react";
 import MediaThemeSutro from "player.style/sutro/react";
+import { useEffect, useRef } from "react";
 
 interface DemoFrameProps {
   /** Rendered video URL. Empty shows the animated placeholder. */
   src: string;
   variant: "dashboard" | "palette";
   caption?: { label: string; prompt: string };
+  /** `load`: play as soon as the page loads (hero). Default: play only
+   * while at least half the video is on screen. */
+  autoplay?: "load" | "visible";
 }
 
 const Rise = ({ className }: { className: string }) => (
@@ -86,23 +90,80 @@ const PaletteScene = () => (
   </div>
 );
 
+const play = async (video: HTMLVideoElement) => {
+  // Browsers only allow autoplay while muted; if they still refuse, the
+  // player's own play button is the fallback.
+  video.muted = true;
+  try {
+    await video.play();
+  } catch {
+    // Autoplay blocked: leave the video paused on its first frame.
+  }
+};
+
+// Muted, looping autoplay. Skipped for visitors who prefer reduced motion.
+const AutoplayVideo = ({
+  src,
+  autoplay,
+}: {
+  src: string;
+  autoplay: "load" | "visible";
+}) => {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    if (autoplay === "load") {
+      play(video);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          play(video);
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [autoplay]);
+
+  return (
+    // Motion pieces with music only, no spoken words to caption.
+    // oxlint-disable-next-line jsx-a11y/media-has-caption
+    <video
+      ref={ref}
+      slot="media"
+      // `#t=0.1` makes browsers paint the first frame as the poster.
+      src={`${src}#t=0.1`}
+      muted
+      loop
+      playsInline
+      preload={autoplay === "load" ? "auto" : "metadata"}
+      className="size-full object-cover"
+    />
+  );
+};
+
 // A video in the Sutro player (player.style), or a looping CSS-only stand-in
 // until `src` is set.
-export const DemoFrame = ({ src, variant, caption }: DemoFrameProps) => (
+export const DemoFrame = ({
+  src,
+  variant,
+  caption,
+  autoplay = "visible",
+}: DemoFrameProps) => (
   <figure className="flex flex-col gap-3">
     <div className="bg-muted/40 relative aspect-video overflow-hidden rounded-xl border shadow-sm">
       {src ? (
         <MediaThemeSutro className="block size-full">
-          {/* Motion pieces with music only, no spoken words to caption. */}
-          {/* oxlint-disable-next-line jsx-a11y/media-has-caption */}
-          <video
-            slot="media"
-            // `#t=0.1` makes browsers paint the first frame as the poster.
-            src={`${src}#t=0.1`}
-            playsInline
-            preload="metadata"
-            className="size-full object-cover"
-          />
+          <AutoplayVideo src={src} autoplay={autoplay} />
         </MediaThemeSutro>
       ) : (
         <>
