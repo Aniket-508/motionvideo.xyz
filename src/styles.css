@@ -140,6 +140,9 @@
   }
   html {
     @apply font-sans;
+    /* No rubber-band bounce past the page edges. */
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
   }
 }
 /* Demo frame and feature art animations */
